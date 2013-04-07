@@ -1,6 +1,6 @@
 var ClientNetworkEvents = {
 	_onPlayerRegisterError: function() {
-		$("#register_message").text("Registration error");
+		$("#register-btn").popover("show");
 	},
 	
 	_onPlayerLogin: function(data) {
@@ -8,7 +8,7 @@ var ClientNetworkEvents = {
 	},
 	
 	_onPlayerLoginError: function() {
-		$("#login_message").text("Login error");
+		$("#login-btn").popover("show");
 	}
 };
 
