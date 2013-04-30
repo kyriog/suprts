@@ -1,82 +1,149 @@
-var Client = IgeClass.extend({
+var Client = IgeClass.extend(
+{
 	classId: 'Client',
-	init: function () {
+	init: function () 
+	{
 		ige.showStats(1);
+		ige.globalSmoothing(true);
 
 		// Load our textures
-		var self = this,
-			gameTexture = [];
-
+		var self = this;
 		this.obj = [];
+		self.gameTexture = {};
+		self.gameTexture.dirtSheet = new IgeCellSheet('./assets/textures/tiles/dirtSheet.png', 4, 1);
+		self.gameTexture.grassSheet = new IgeCellSheet('./assets/textures/tiles/grassSheet.png', 4, 1);
+		self.gameTexture.arrosoir = new IgeTexture('./assets/arrosoir.png');
+		// Enable networking
+		ige.addComponent(IgeNetIoComponent);
 
-		ige.input.debug(true);
+		// Implement our game methods
+		this.implement(ClientNetworkEvents);
 
-		// Load the fairy texture and store it in the gameTexture array
-		gameTexture[0] = new IgeTexture('../ige/examples/assets/textures/sprites/fairy.png');
-
-		// Load a smart texture
-		gameTexture[1] = new IgeTexture('../ige/examples/assets/textures/smartTextures/simpleBox.js');
-
-		// Wait for our textures to load before continuing
-		ige.on('texturesLoaded', function () {
+		ige.on('texturesLoaded', function () 
+		{
 			// Create the HTML canvas
 			ige.createFrontBuffer(true);
 
 			// Start the engine
-			ige.start(function (success) {
+			ige.start(function (success) 
+			{
 				// Check if the engine started successfully
-				if (success) {
-					// Create the scene
-					self.scene1 = new IgeScene2d()
-						.id('scene1');
+				if (success) 
+				{
+					ige.network.start('http://localhost:2000', function () 
+					{
+						self.playerId = 0;
+						self.counter = 0;
+						self.chunksCache = new Object();
+						
+						// Setup the network command listeners
+						ige.network.define('playerEntity', self._onPlayerEntity); // Defined in ./gameClasses/ClientNetworkEvents.js
+						ige.network.define('characterMove', self._onCharacterMove);
+						ige.network.define('mapSection', self._onMapSection);
+						
+						ige.network.define('playerNeuterConquest', self._onPlayerNeuterConquest);
+						
+						// Setup the network stream handler
+						ige.network.addComponent(IgeStreamComponent).stream.renderLatency(80).stream.on('entityCreated', function (entity) {} );
+						
+						// Create the scene
+						self.mainScene = new IgeScene2d();
+						self.mainScene.id('mainScene');
+						self.mainScene.drawBounds(false);
+						self.mainScene.drawBoundsData(false);
 
-					// Create the main viewport and set the scene
-					// it will "look" at as the new scene1 we just
-					// created above
-					self.vp1 = new IgeViewport()
-						.id('vp1')
-						.autoSize(true)
-						.scene(self.scene1)
-						.drawBounds(true)
-						.mount(ige);
+						self.objectScene = new IgeScene2d();
+						self.objectScene.id('objectScene');
+						self.objectScene.depth(0);
+						self.objectScene.drawBounds(false);
+						self.objectScene.drawBoundsData(false);
+						self.objectScene.mount(self.mainScene);
 
-					// Create an entity and mount it to the scene
-					// (the class Rotator is declared in ./gameClasses/Rotator.js)
-					self.obj[0] = new Rotator()
-						.id('fairy1')
-						.depth(1)
-						.width(100)
-						.height(100)
-						.texture(gameTexture[0])
-						.translateTo(0, 0, 0)
-						.mount(self.scene1);
+						// Create the main viewport
+						self.vp1 = new IgeViewport();
+						self.vp1.id('vp1');
+						self.vp1.autoSize(true);
+						self.vp1.scene(self.mainScene);
+						self.vp1.drawMouse(false);
+						self.vp1.drawBounds(false);
+						self.vp1.drawBoundsData(false);
+						self.vp1.mount(ige);
 
-					// Create a second rotator entity and mount
-					// it to the first one at 0, 50 relative to the
-					// parent
-					self.obj[1] = new Rotator()
-						.id('fairy2')
-						.depth(1)
-						.width(50)
-						.height(50)
-						.texture(gameTexture[0])
-						.translateTo(0, 50, 0)
-						.mount(self.obj[0]);
+						// Contient les entités and co mais ne s'occupe pas du rendu des tuiles
+						self.TitleMap = new IgeTileMap2d();
+						self.TitleMap.id('TitleMap');
+						self.TitleMap.addComponent(ClickComponent);
+						self.TitleMap.isometricMounts(true);
+						self.TitleMap.tileWidth(40);
+						self.TitleMap.tileHeight(40);
+						//self.TitleMap.drawGrid(25);	 // Pour le debug only	
+						self.TitleMap.drawMouse(true);
+						self.TitleMap.drawBounds(true);
+						self.TitleMap.drawBoundsData(true);
+						self.TitleMap.mount(self.objectScene);
 
-					// Create a third rotator entity and mount
-					// it to the first on at 0, -50 relative to the
-					// parent, but assign it a smart texture!
-					self.obj[2] = new Rotator()
-						.id('simpleBox')
-						.depth(1)
-						.width(50)
-						.height(50)
-						.texture(gameTexture[1])
-						.translateTo(0, -50, 0)
-						.mount(self.obj[0]);
+						self.uiScene = new IgeScene2d().id('uiScene').depth(1).ignoreCamera(true).mount(self.mainScene);
+
+						// Dessine les tuiles a l écran
+						self.TextureMap = new IgeTextureMap();
+						self.TextureMap.depth(0);
+						self.TextureMap.tileWidth(40);
+						self.TextureMap.tileHeight(40);
+						self.TextureMap.translateTo(0, 0, 0);
+						self.TextureMap.autoSection(10);
+						
+						//self.TitleMap.drawGrid(25);
+						self.TextureMap.drawBounds(false);
+						self.TextureMap.drawSectionBounds(false);
+						self.TextureMap.isometricMounts(true);
+						self.TextureMap.mount(self.mainScene);
+						
+						
+						var DirtTexIndex = self.TextureMap.addTexture(self.gameTexture.dirtSheet);
+						var GrassTexIndex = self.TextureMap.addTexture(self.gameTexture.grassSheet);
+
+						self.setupGui();
+						// Ask the server to create an entity for us
+						ige.network.send('playerEntity');
+
+					});
 				}
 			});
 		});
+	},
+	
+	setupGui: function()
+	{
+		
+		
+		ige.client.obj[1] = new IgeUiEntity()
+						.id('topBar')
+						.depth(10)
+						.backgroundColor('#474747')
+						.left(0)
+						.bottom(22) // IN DEBUG, SET TO 0 at RELEASE
+						.width('100%')
+						.height(60)
+						.borderBottomColor('#666666')
+						.borderBottomWidth(1)
+						.backgroundPosition(0, 0)
+						.mount(ige.client.uiScene);
+						
+						ige.client.obj[2] = new IgeUiEntity()
+						.id('entityButton')
+						.depth(10)
+						.top(6)
+						.left(15)
+						.width(40)
+						.height(40)
+						.cell(1)
+						.backgroundImage(ige.client.gameTexture.arrosoir, 'no-repeat')
+						.mouseOver(function () {this.backgroundColor('#49ceff'); ige.input.stopPropagation(); })
+						.mouseOut(function () {this.backgroundColor('#474747'); ige.input.stopPropagation(); })
+						.mouseUp(function () { console.log('Clicked ' + this.id()); ige.input.stopPropagation(); })
+						.mount(ige.client.obj[1]);
+						
+		
 	}
 });
 
