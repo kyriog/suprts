@@ -6,7 +6,7 @@
 }
 
 /* welcome form inside the hoverlay */
-#hoverlay>div {
+#hoverlay-content {
 	position: relative;
 	width: 500px;
 	left: 50%;
