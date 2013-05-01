@@ -28,3 +28,21 @@ h1 {
 	text-align: right;
 	padding-right: 10px;
 }
+
+#top-buttons {
+	top: -1px;
+	right: 5px;
+	position: fixed;
+}
+
+#top-buttons a.first {
+	border-bottom-right-radius: 0;
+}
+
+#top-buttons a {
+	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
+	background-color: #FFF;
+	padding: 0 5px 0 5px;
+	margin-left: 2px;
+}

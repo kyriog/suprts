@@ -5,6 +5,9 @@ var ClientNetworkEvents = {
 	
 	_onPlayerLogin: function(data) {
 		$("#hoverlay").hide();
+		if(data.is_admin) {
+			$("#admin-link").show();
+		}
 	},
 	
 	_onPlayerLoginError: function() {
