@@ -1,0 +1,23 @@
+Player Action:
+
+_Player_Logging(Username, Password)
+_Player_Connect(AuthentificationToken)
+_Player_CreateNewGame(Difficulty)
+
+_Player_Move(X,Z)
+
+_Player_AttackTitle(X,Z)
+_Player_Fertilize(X,Z,ValueWanted)
+_Player_Watering(X,Z)
+_Player_Harvest(X,Z)
+_Player_SellCrop(CropType, Amount)
+_Player_HarvestAndSell(X,Z) { _Player_Harvest(X,Z) => _Player_SellCrop(CropType, Amount)}
+
+_Player_CreateAlliance(Name)
+_Player_JoinAlliance(Name)
+_Player_LeaveAlliance
+
+_Player_BuildSilo(XOrigin, ZOrigin)
+_Player_BuildBarn(XOrigin, ZOrigin, Direction)
+_Player_BuildColdStorage(XOrigin, ZOrigin, Direction)
+
