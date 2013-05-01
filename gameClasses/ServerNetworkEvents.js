@@ -4,15 +4,32 @@ var ServerNetworkEvents = {
 			ige.server.users[data.email] = {'password': data.password};
 			ige.server.clients[clientId] = data.email;
 			ige.network.send('playerLogin');
+			// We should move these 3 lines to another method to avoid duplicate code
+			ige.server.characters[clientId] = new CharacterContainer().id(clientId).streamMode(1).mount(ige.server.TitleMap);
+			ige.server.characters[clientId].translateTo(0,0,0);
+			ige.network.send('playerEntity', ige.server.characters[clientId].id(), clientId);
 		} else
 			ige.network.send('playerRegisterError');
 	},
 	
 	_onPlayerLogin: function(data, clientId) {
-		if(ige.server.users[data.email] && ige.server.users[data.email]['password'] == data.password)
+		if(ige.server.users[data.email] && ige.server.users[data.email]['password'] == data.password) {
 			ige.network.send('playerLogin');
-		else
+			// We should move these 3 lines to another method to avoid duplicate code
+			ige.server.characters[clientId] = new CharacterContainer().id(clientId).streamMode(1).mount(ige.server.TitleMap);
+			ige.server.characters[clientId].translateTo(0,0,0);
+			ige.network.send('playerEntity', ige.server.characters[clientId].id(), clientId);
+		} else
 			ige.network.send('playerLoginError');
+	},
+		
+	_onMapSection: function(clientId) {
+		var chunks = ige.server.world.getChunks(0,0,2);
+		console.log('chunks.length: ' + chunks.length);
+		for(var i = 0; i < chunks.length; i++)
+		{
+			ige.network.send('mapSection', chunks[i]);
+		}
 	},
 	
 	_onPlayerDisconnect: function(clientId) {
@@ -21,23 +38,6 @@ var ServerNetworkEvents = {
 		{
 			ige.server.characters[clientId].destroy();
 			delete ige.server.characters[clientId];
-		}
-	},
-	
-	_onPlayerEntity: function (data, clientId) 
-	{
-		if (!ige.server.characters[clientId]) 
-		{
-			ige.server.characters[clientId] = new CharacterContainer().id(clientId).streamMode(1).mount(ige.server.TitleMap);
-			ige.server.characters[clientId].translateTo(0,0,0);
-			ige.network.send('playerEntity', ige.server.characters[clientId].id(), clientId);
-			
-			var chunks = ige.server.world.getChunks(0,0,2);
-			console.log('chunks.length: ' + chunks.length);
-			for(var i = 0; i < chunks.length; i++)
-			{
-				ige.network.send('mapSection', chunks[i]);
-			}
 		}
 	},
 	

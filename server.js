@@ -26,11 +26,11 @@ var Server = IgeClass.extend({
 						ige.network.define('playerRegister', self._onPlayerRegister);
 						ige.network.define('playerLogin', self._onPlayerLogin);
 						ige.network.define('playerLoginError');
-						ige.network.define('playerEntity', self._onPlayerEntity);
+						ige.network.define('playerEntity');
 						ige.network.define('playerMove', self._onPlayerMove);
 						
 						ige.network.define('characterMove');
-						ige.network.define('mapSection');
+						ige.network.define('mapSection', self._onMapSection);
 						ige.network.define('playerNeuterConquest', self._onPlayerNeuterConquest);
 						
 						ige.network.on('disconnect', self._onPlayerDisconnect);

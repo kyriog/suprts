@@ -107,9 +107,7 @@ var Client = IgeClass.extend(
 						var GrassTexIndex = self.TextureMap.addTexture(self.gameTexture.grassSheet);
 
 						self.setupGui();
-						// Ask the server to create an entity for us
-						ige.network.send('playerEntity');
-
+						ige.network.send('mapSection');
 					});
 				}
 			});
