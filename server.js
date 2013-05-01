@@ -1,46 +1,53 @@
-var Server = IgeClass.extend(
-{
+var Server = IgeClass.extend({
 	classId: 'Server',
 	Server: true,
 
-	init: function (options) 
-	{
+	init: function (options) {
 		var self = this;
 		ige.timeScale(1);
 		
+		this.users = {};
+		this.clients = {};
 		this.characters = {};
 		this.world = new World();
 		
 		this.implement(ServerNetworkEvents);
-
+		
+		// Connecting to MySQL server
+		ige.addComponent(IgeMySqlComponent, options.db).mysql.connect(function(err, db) {
+			if(err)
+				console.log(err);
+		});
+		
 		// Add the networking component
-		ige.addComponent(IgeNetIoComponent).network.start(2000, function () 
-		{
+		ige.addComponent(IgeNetIoComponent)
+			// Start the network server
+			.network.start(2000, function () {
 				// Networking has started so start the game engine
-				ige.start(function (success) 
-				{
+				ige.start(function (success) {
 					// Check if the engine started successfully
-					if (success) 
-					{
+					if (success) {
 						// Create some network commands we will need
-						ige.network.define('playerEntity', self._onPlayerEntity);
+						ige.network.define('playerRegisterError');
+						ige.network.define('playerRegister', self._onPlayerRegister);
+						ige.network.define('playerLogin', self._onPlayerLogin);
+						ige.network.define('playerLoginError');
+						ige.network.define('playerEntity');
 						ige.network.define('playerMove', self._onPlayerMove);
 						
 						ige.network.define('characterMove');
-						ige.network.define('mapSection');
+						ige.network.define('mapSection', self._onMapSection);
 						ige.network.define('playerNeuterConquest', self._onPlayerNeuterConquest);
 						
-						ige.network.on('connect', self._onPlayerConnect); // Defined in ./gameClasses/ServerNetworkEvents.js
-						ige.network.on('disconnect', self._onPlayerDisconnect); // Defined in ./gameClasses/ServerNetworkEvents.js
+						ige.network.on('disconnect', self._onPlayerDisconnect);
 						
 						// Add the network stream component
 						ige.network.addComponent(IgeStreamComponent)
 							.stream.sendInterval(30) // Send a stream update once every 30 milliseconds
 							.stream.start(); // Start the stream
-
-						// Accept incoming network connections
+						
 						ige.network.acceptConnections(true);
-
+						
 						// Create the scene
 						self.mainScene = new IgeScene2d()
 							.id('mainScene')

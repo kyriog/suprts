@@ -1,4 +1,16 @@
 var ClientNetworkEvents = {
+	_onPlayerRegisterError: function() {
+		$("#register-btn").popover("show");
+	},
+	
+	_onPlayerLogin: function(data) {
+		$("#hoverlay").hide();
+	},
+	
+	_onPlayerLoginError: function() {
+		$("#login-btn").popover("show");
+	},
+	
 	/**
 	 * Is called when a network packet with the "playerEntity" command
 	 * is received by the client from the server. This is the server telling
@@ -99,7 +111,6 @@ var ClientNetworkEvents = {
 	_onPlayerNeuterConquest: function (data)
 	{
 	}
-	
 };
 
 if (typeof(module) !== 'undefined' && typeof(module.exports) !== 'undefined') { module.exports = ClientNetworkEvents; }

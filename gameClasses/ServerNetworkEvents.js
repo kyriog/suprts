@@ -1,33 +1,55 @@
-var ServerNetworkEvents = 
-{
-	_onPlayerConnect: function (socket) 
-	{
-		return false;
+var ServerNetworkEvents = {
+	_onPlayerRegister: function(data, clientId) {
+		var query = 'INSERT INTO users (email, password, level) VALUES ("'+data.email+'", SHA1("'+data.password+'"), "'+data.difficulty+'");';
+		ige.mysql.query(query, function(err, rows) {
+			if(!err) {
+				ige.server.clients[clientId] = rows.insertId;
+				ige.network.send('playerLogin');
+				// We should move these 3 lines to another method to avoid duplicate code
+				ige.server.characters[clientId] = new CharacterContainer().id(clientId).streamMode(1).mount(ige.server.TitleMap);
+				ige.server.characters[clientId].translateTo(0,0,0);
+				ige.network.send('playerEntity', ige.server.characters[clientId].id(), clientId);
+			} else {
+				console.log(err);
+				ige.network.send('playerRegisterError');
+			}
+		});
 	},
-
-	_onPlayerDisconnect: function (clientId) 
-	{
+	
+	_onPlayerLogin: function(data, clientId) {
+		var query = 'SELECT id FROM users WHERE email = "'+data.email+'" AND password = SHA1("'+data.password+'");';
+		ige.mysql.query(query, function(err, rows) {
+			if(err) {
+				console.log(err);
+				ige.network.send('playerLoginError');
+			} else if(rows.length == 0) 
+				ige.network.send('playerLoginError');
+			else {
+				ige.server.clients[clientId] = rows.id;
+				ige.network.send('playerLogin');
+				// We should move these 3 lines to another method to avoid duplicate code
+				ige.server.characters[clientId] = new CharacterContainer().id(clientId).streamMode(1).mount(ige.server.TitleMap);
+				ige.server.characters[clientId].translateTo(0,0,0);
+				ige.network.send('playerEntity', ige.server.characters[clientId].id(), clientId);
+			}
+		});
+	},
+		
+	_onMapSection: function(clientId) {
+		var chunks = ige.server.world.getChunks(0,0,2);
+		console.log('chunks.length: ' + chunks.length);
+		for(var i = 0; i < chunks.length; i++)
+		{
+			ige.network.send('mapSection', chunks[i]);
+		}
+	},
+	
+	_onPlayerDisconnect: function(clientId) {
+		delete(ige.server.clients[clientId]);
 		if (ige.server.characters[clientId]) 
 		{
 			ige.server.characters[clientId].destroy();
 			delete ige.server.characters[clientId];
-		}
-	},
-
-	_onPlayerEntity: function (data, clientId) 
-	{
-		if (!ige.server.characters[clientId]) 
-		{
-			ige.server.characters[clientId] = new CharacterContainer().id(clientId).streamMode(1).mount(ige.server.TitleMap);
-			ige.server.characters[clientId].translateTo(0,0,0);
-			ige.network.send('playerEntity', ige.server.characters[clientId].id(), clientId);
-			
-			var chunks = ige.server.world.getChunks(0,0,2);
-			console.log('chunks.length: ' + chunks.length);
-			for(var i = 0; i < chunks.length; i++)
-			{
-				ige.network.send('mapSection', chunks[i]);
-			}
 		}
 	},
 	
@@ -111,7 +133,6 @@ var ServerNetworkEvents =
 		}
 		
 	},
-	
 };
 
 if (typeof(module) !== 'undefined' && typeof(module.exports) !== 'undefined') { module.exports = ServerNetworkEvents; }
