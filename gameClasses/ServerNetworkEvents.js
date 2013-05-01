@@ -1,26 +1,38 @@
 var ServerNetworkEvents = {
 	_onPlayerRegister: function(data, clientId) {
-		if(!ige.server.users[data.email]) {
-			ige.server.users[data.email] = {'password': data.password};
-			ige.server.clients[clientId] = data.email;
-			ige.network.send('playerLogin');
-			// We should move these 3 lines to another method to avoid duplicate code
-			ige.server.characters[clientId] = new CharacterContainer().id(clientId).streamMode(1).mount(ige.server.TitleMap);
-			ige.server.characters[clientId].translateTo(0,0,0);
-			ige.network.send('playerEntity', ige.server.characters[clientId].id(), clientId);
-		} else
-			ige.network.send('playerRegisterError');
+		var query = 'INSERT INTO users (email, password) VALUES ("'+data.email+'", SHA1("'+data.password+'"));';
+		ige.mysql.query(query, function(err, rows) {
+			if(!err) {
+				ige.server.clients[clientId] = rows.insertId;
+				ige.network.send('playerLogin');
+				// We should move these 3 lines to another method to avoid duplicate code
+				ige.server.characters[clientId] = new CharacterContainer().id(clientId).streamMode(1).mount(ige.server.TitleMap);
+				ige.server.characters[clientId].translateTo(0,0,0);
+				ige.network.send('playerEntity', ige.server.characters[clientId].id(), clientId);
+			} else {
+				console.log(err);
+				ige.network.send('playerRegisterError');
+			}
+		});
 	},
 	
 	_onPlayerLogin: function(data, clientId) {
-		if(ige.server.users[data.email] && ige.server.users[data.email]['password'] == data.password) {
-			ige.network.send('playerLogin');
-			// We should move these 3 lines to another method to avoid duplicate code
-			ige.server.characters[clientId] = new CharacterContainer().id(clientId).streamMode(1).mount(ige.server.TitleMap);
-			ige.server.characters[clientId].translateTo(0,0,0);
-			ige.network.send('playerEntity', ige.server.characters[clientId].id(), clientId);
-		} else
-			ige.network.send('playerLoginError');
+		var query = 'SELECT id FROM users WHERE email = "'+data.email+'" AND password = SHA1("'+data.password+'");';
+		ige.mysql.query(query, function(err, rows) {
+			if(err) {
+				console.log(err);
+				ige.network.send('playerLoginError');
+			} else if(rows.length == 0) 
+				ige.network.send('playerLoginError');
+			else {
+				ige.server.clients[clientId] = rows.id;
+				ige.network.send('playerLogin');
+				// We should move these 3 lines to another method to avoid duplicate code
+				ige.server.characters[clientId] = new CharacterContainer().id(clientId).streamMode(1).mount(ige.server.TitleMap);
+				ige.server.characters[clientId].translateTo(0,0,0);
+				ige.network.send('playerEntity', ige.server.characters[clientId].id(), clientId);
+			}
+		});
 	},
 		
 	_onMapSection: function(clientId) {

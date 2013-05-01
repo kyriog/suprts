@@ -8,7 +8,14 @@ var config = {
 		{name: 'Title', path: './gameClasses/World/Title'},
 		{name: 'WorldGenerator', path: './gameClasses/World/WorldGenerator'},
 		//{name: 'DatabaseManager', path: './gameClasses/Database/DatabaseManager'}
-	]
+	],
+	db: {
+		type: 'mysql',
+		host: 'localhost',
+		user: 'root',
+		pass: '',
+		dbName: 'suprts'
+	}
 };
 
 if (typeof(module) !== 'undefined' && typeof(module.exports) !== 'undefined') { module.exports = config; }

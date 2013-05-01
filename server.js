@@ -13,6 +13,12 @@ var Server = IgeClass.extend({
 		
 		this.implement(ServerNetworkEvents);
 		
+		// Connecting to MySQL server
+		ige.addComponent(IgeMySqlComponent, options.db).mysql.connect(function(err, db) {
+			if(err)
+				console.log(err);
+		});
+		
 		// Add the networking component
 		ige.addComponent(IgeNetIoComponent)
 			// Start the network server
