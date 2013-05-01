@@ -1,6 +1,6 @@
 var ServerNetworkEvents = {
 	_onPlayerRegister: function(data, clientId) {
-		var query = 'INSERT INTO users (email, password) VALUES ("'+data.email+'", SHA1("'+data.password+'"));';
+		var query = 'INSERT INTO users (email, password, level) VALUES ("'+data.email+'", SHA1("'+data.password+'"), "'+data.difficulty+'");';
 		ige.mysql.query(query, function(err, rows) {
 			if(!err) {
 				ige.server.clients[clientId] = rows.insertId;

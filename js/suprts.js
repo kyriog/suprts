@@ -46,7 +46,11 @@ $('#login').submit(function(e, h) {
 $('#register').submit(function(e, h) {
 	e.preventDefault();
 	if($('#register_password').val() == $('#register_confirm_password').val()) {
-		data = {'email': $('#register_email').val(), 'password': $('#register_password').val()};
+		data = {
+			'email': $('#register_email').val(),
+			'password': $('#register_password').val(),
+			'difficulty': $('#register_difficulty').val()
+		};
 		ige.network.send('playerRegister', data);
 	} else
 		$("#register_confirm_password").popover('show');
