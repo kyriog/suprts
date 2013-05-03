@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Ven 03 Mai 2013 à 19:34
+-- Généré le: Ven 03 Mai 2013 à 19:40
 -- Version du serveur: 5.5.27
 -- Version de PHP: 5.4.7
 
@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(40) NOT NULL,
   `is_administrator` tinyint(1) NOT NULL DEFAULT '0',
   `level` enum('easy','medium','hard') NOT NULL,
+  `money` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email_2` (`email`),
   KEY `email` (`email`,`password`)
@@ -60,8 +61,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Contenu de la table `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `password`, `is_administrator`, `level`) VALUES
-(1, 'admin@local', 'd033e22ae348aeb5660fc2140aec35850c4da997', 1, 'easy');
+INSERT INTO `users` (`id`, `email`, `password`, `is_administrator`, `level`, `money`) VALUES
+(1, 'admin@local', 'd033e22ae348aeb5660fc2140aec35850c4da997', 1, 'easy', 1000);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
