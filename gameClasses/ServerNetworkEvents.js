@@ -1,15 +1,35 @@
 var ServerNetworkEvents = {
 	_onPlayerRegister: function(data, clientId) {
-		var query = 'INSERT INTO users (email, password, level) VALUES ("'+data.email+'", SHA1("'+data.password+'"), "'+data.difficulty+'");';
+		var query = 'SELECT config_value FROM config WHERE config_name="start_money"';
 		ige.mysql.query(query, function(err, rows) {
 			if(!err) {
-				ige.server.clients[clientId] = rows.insertId;
-				clientData = { is_admin: 1 };
-				ige.network.send('playerLogin', clientData);
-				// We should move these 3 lines to another method to avoid duplicate code
-				ige.server.characters[clientId] = new CharacterContainer().id(clientId).streamMode(1).mount(ige.server.TitleMap);
-				ige.server.characters[clientId].translateTo(0,0,0);
-				ige.network.send('playerEntity', ige.server.characters[clientId].id(), clientId);
+				var money = 0;
+				switch(data.difficulty) {
+				case "easy":
+					money = rows[0].config_value;
+					break;
+				case "normal":
+					money = rows[0].config_value / 2;
+					break;
+				case "hard":
+					money = rows[0].config_value / 10;
+					break; 
+				}
+				var query = 'INSERT INTO users (email, password, level, money) VALUES ("'+data.email+'", SHA1("'+data.password+'"), "'+data.difficulty+'", "'+money+'");';
+				ige.mysql.query(query, function(err, rows) {
+					if(!err) {
+						ige.server.clients[clientId] = rows.insertId;
+						clientData = { is_admin: 1 };
+						ige.network.send('playerLogin', clientData);
+						// We should move these 3 lines to another method to avoid duplicate code
+						ige.server.characters[clientId] = new CharacterContainer().id(clientId).streamMode(1).mount(ige.server.TitleMap);
+						ige.server.characters[clientId].translateTo(0,0,0);
+						ige.network.send('playerEntity', ige.server.characters[clientId].id(), clientId);
+					} else {
+						console.log(err);
+						ige.network.send('playerRegisterError');
+					}
+				});
 			} else {
 				console.log(err);
 				ige.network.send('playerRegisterError');
