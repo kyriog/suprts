@@ -4,7 +4,8 @@ var ServerNetworkEvents = {
 		ige.mysql.query(query, function(err, rows) {
 			if(!err) {
 				ige.server.clients[clientId] = rows.insertId;
-				ige.network.send('playerLogin');
+				clientData = { is_admin: 1 };
+				ige.network.send('playerLogin', clientData);
 				// We should move these 3 lines to another method to avoid duplicate code
 				ige.server.characters[clientId] = new CharacterContainer().id(clientId).streamMode(1).mount(ige.server.TitleMap);
 				ige.server.characters[clientId].translateTo(0,0,0);
@@ -17,7 +18,7 @@ var ServerNetworkEvents = {
 	},
 	
 	_onPlayerLogin: function(data, clientId) {
-		var query = 'SELECT id FROM users WHERE email = "'+data.email+'" AND password = SHA1("'+data.password+'");';
+		var query = 'SELECT id, is_administrator FROM users WHERE email = "'+data.email+'" AND password = SHA1("'+data.password+'") LIMIT 1;';
 		ige.mysql.query(query, function(err, rows) {
 			if(err) {
 				console.log(err);
@@ -25,8 +26,9 @@ var ServerNetworkEvents = {
 			} else if(rows.length == 0) 
 				ige.network.send('playerLoginError');
 			else {
-				ige.server.clients[clientId] = rows.id;
-				ige.network.send('playerLogin');
+				ige.server.clients[clientId] = rows[0].id;
+				clientData = { is_admin: rows[0].is_administrator };
+				ige.network.send('playerLogin', clientData);
 				// We should move these 3 lines to another method to avoid duplicate code
 				ige.server.characters[clientId] = new CharacterContainer().id(clientId).streamMode(1).mount(ige.server.TitleMap);
 				ige.server.characters[clientId].translateTo(0,0,0);
@@ -132,6 +134,44 @@ var ServerNetworkEvents = {
 			
 		}
 		
+	},
+	
+	_onAdminLink: function(data, clientId) {
+		query = 'SELECT is_administrator FROM users WHERE id="'+ige.server.clients[clientId]+'" LIMIT 1;';
+		ige.mysql.query(query, function(err, rows) {
+			if(err || !rows[0].is_administrator) {
+				data = { can_access: 0 };
+				ige.network.send('adminlink', data);
+			} else {
+				query = "SELECT * FROM config";
+				ige.mysql.query(query, function(err, rows) {
+					content = {};
+					for(config in rows) {
+						content[rows[config].config_name] = rows[config].config_value; 
+					}
+					data = { can_access: 1, content: content };
+					
+					ige.network.send('adminlink', data);
+				});
+			}
+		});
+	},
+	
+	_onUpdateAdmin: function(data, clientId) {
+		query = 'SELECT is_administrator FROM users WHERE id="'+ige.server.clients[clientId]+'";';
+		ige.mysql.query(query, function(err, rows) {
+			if(!err && rows[0].is_administrator) {
+				for(config in data) {
+					query = 'UPDATE config SET config_value="'+data[config]+'" WHERE config_name="'+config+'";';
+					ige.mysql.query(query, function(err) {
+						if(err)
+							console.log("Unable to update value for "+config);
+						else
+							console.log("Setting '"+config+"' to '"+data[config]+"'");
+					});
+				}
+			}
+		});
 	},
 };
 

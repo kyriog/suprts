@@ -47,6 +47,8 @@ var Client = IgeClass.extend(
 						
 						ige.network.define('playerNeuterConquest', self._onPlayerNeuterConquest);
 						
+						ige.network.define('adminlink', self._onAdminLink);
+						
 						// Setup the network stream handler
 						ige.network.addComponent(IgeStreamComponent).stream.renderLatency(80).stream.on('entityCreated', function (entity) {} );
 						
