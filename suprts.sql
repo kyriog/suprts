@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Ven 03 Mai 2013 à 19:40
+-- Généré le: Ven 03 Mai 2013 à 19:51
 -- Version du serveur: 5.5.27
 -- Version de PHP: 5.4.7
 
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email` varchar(50) NOT NULL,
   `password` varchar(40) NOT NULL,
   `is_administrator` tinyint(1) NOT NULL DEFAULT '0',
-  `level` enum('easy','medium','hard') NOT NULL,
+  `level` enum('easy','normal','hard') NOT NULL,
   `money` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email_2` (`email`),
