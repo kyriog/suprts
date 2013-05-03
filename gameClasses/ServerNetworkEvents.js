@@ -165,7 +165,7 @@ var ServerNetworkEvents = {
 		
 	},
 	
-	_onAdminLink: function(clientId) {
+	_onAdminLink: function(nodata, clientId) {
 		query = 'SELECT is_administrator FROM users WHERE id="'+ige.server.clients[clientId]+'" LIMIT 1;';
 		ige.mysql.query(query, function(err, rows) {
 			if(err || !rows[0].is_administrator) {
