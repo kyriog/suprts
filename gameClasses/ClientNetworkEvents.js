@@ -118,10 +118,7 @@ var ClientNetworkEvents = {
 	
 	_onAdminLink: function(data) {
 		if(data.can_access) {
-			console.log(data);
 			for(config in data.content) {
-				console.log('#admin input[name="'+config+'"]');
-				console.log($('#admin input[name="'+config+'"]').val());
 				$('#admin input[name="'+config+'"]').val(data.content[config]);
 			}
 			
