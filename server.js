@@ -32,6 +32,7 @@ var Server = IgeClass.extend({
 						ige.network.define('playerRegister', self._onPlayerRegister);
 						ige.network.define('playerLogin', self._onPlayerLogin);
 						ige.network.define('playerLoginError');
+						ige.network.define('playerLogout', self._onPlayerLogout);
 						ige.network.define('playerEntity');
 						ige.network.define('playerMove', self._onPlayerMove);
 						

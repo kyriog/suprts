@@ -56,6 +56,14 @@ $('#register').submit(function(e, h) {
 		$("#register_confirm_password").popover('show');
 });
 
+$("#logout-link").click(function() {
+	ige.network.send("playerLogout");
+	$("#hoverlay").fadeIn("1000");
+	$("#login-content").slideDown("1000");
+	$("#admin-link").fadeOut("1000");
+	$("#top-buttons").fadeOut("1000");
+});
+
 // Handling administration link
 $("#admin-link").click(function() {
 	ige.network.send("adminlink");

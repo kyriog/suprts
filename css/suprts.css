@@ -53,8 +53,9 @@ h1 {
 
 #top-buttons {
 	top: -1px;
-	right: 5px;
+	right: 0;
 	position: fixed;
+	display: none;
 }
 
 #top-buttons a.first {

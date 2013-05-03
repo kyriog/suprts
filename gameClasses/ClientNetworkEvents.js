@@ -6,9 +6,18 @@ var ClientNetworkEvents = {
 	_onPlayerLogin: function(data) {
 		$("#hoverlay").fadeOut("1000");
 		$("#login-content").slideUp("1000");
+		$("#top-buttons").fadeIn("500");
 		if(data.is_admin) {
-			$("#admin-link").fadeIn("500");
+			$("#admin-link").show();
 		}
+		
+		// Clearing all login/register fields
+		$("#login_email").val("");
+		$("#login_password").val("");
+		$("#register_email").val("");
+		$("#register_password").val("");
+		$("#register_confirm_password").val("");
+		$("#register_difficulty").val("");
 	},
 	
 	_onPlayerLoginError: function() {

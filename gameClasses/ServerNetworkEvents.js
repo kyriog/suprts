@@ -66,8 +66,7 @@ var ServerNetworkEvents = {
 		}
 	},
 	
-	_onPlayerDisconnect: function(data, clientId) {
-		console.log("Destroying character "+clientId);
+	_onPlayerDisconnect: function(clientId) {
 		delete(ige.server.clients[clientId]);
 		if (ige.server.characters[clientId]) 
 		{
@@ -76,6 +75,15 @@ var ServerNetworkEvents = {
 		}
 	},
 	
+	// Same as _onPlayerDisconnect, but seems we cannot share same event for a define() and a on() event
+	_onPlayerLogout: function(data, clientId) {
+		delete(ige.server.clients[clientId]);
+		if (ige.server.characters[clientId]) 
+		{
+			ige.server.characters[clientId].destroy();
+			delete ige.server.characters[clientId];
+		}
+	},
 	
 	_onPlayerMove: function (data, clientId) 
 	{
