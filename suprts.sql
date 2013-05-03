@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Dim 07 Avril 2013 à 15:07
+-- Généré le: Ven 03 Mai 2013 à 19:34
 -- Version du serveur: 5.5.27
 -- Version de PHP: 5.4.7
 
@@ -19,6 +19,25 @@ SET time_zone = "+00:00";
 --
 -- Base de données: `suprts`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `config`
+--
+
+CREATE TABLE IF NOT EXISTS `config` (
+  `config_name` varchar(30) NOT NULL,
+  `config_value` varchar(255) NOT NULL,
+  PRIMARY KEY (`config_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `config`
+--
+
+INSERT INTO `config` (`config_name`, `config_value`) VALUES
+('start_money', '1000');
 
 -- --------------------------------------------------------
 
