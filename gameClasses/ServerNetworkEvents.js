@@ -20,19 +20,19 @@ var ServerNetworkEvents = {
 					if(!err) {
 						ige.server.clients[clientId] = rows.insertId;
 						clientData = { is_admin: 0 };
-						ige.network.send('playerLogin', clientData);
+						ige.network.send('playerLogin', clientData, clientId);
 						// We should move these 3 lines to another method to avoid duplicate code
 						ige.server.characters[clientId] = new CharacterContainer().id(clientId).streamMode(1).mount(ige.server.TitleMap);
 						ige.server.characters[clientId].translateTo(0,0,0);
 						ige.network.send('playerEntity', ige.server.characters[clientId].id(), clientId);
 					} else {
 						console.log(err);
-						ige.network.send('playerRegisterError');
+						ige.network.send('playerRegisterError', null, clientId);
 					}
 				});
 			} else {
 				console.log(err);
-				ige.network.send('playerRegisterError');
+				ige.network.send('playerRegisterError', null, clientId);
 			}
 		});
 	},
@@ -42,13 +42,13 @@ var ServerNetworkEvents = {
 		ige.mysql.query(query, function(err, rows) {
 			if(err) {
 				console.log(err);
-				ige.network.send('playerLoginError');
+				ige.network.send('playerLoginError', null, clientId);
 			} else if(rows.length == 0) 
-				ige.network.send('playerLoginError');
+				ige.network.send('playerLoginError', null, clientId);
 			else {
 				ige.server.clients[clientId] = rows[0].id;
 				clientData = { is_admin: rows[0].is_administrator };
-				ige.network.send('playerLogin', clientData);
+				ige.network.send('playerLogin', clientData, clientId);
 				// We should move these 3 lines to another method to avoid duplicate code
 				ige.server.characters[clientId] = new CharacterContainer().id(clientId).streamMode(1).mount(ige.server.TitleMap);
 				ige.server.characters[clientId].translateTo(0,0,0);
@@ -170,7 +170,7 @@ var ServerNetworkEvents = {
 		ige.mysql.query(query, function(err, rows) {
 			if(err || !rows[0].is_administrator) {
 				data = { can_access: 0 };
-				ige.network.send('adminlink', data);
+				ige.network.send('adminlink', data, clientId);
 			} else {
 				query = "SELECT * FROM config";
 				ige.mysql.query(query, function(err, rows) {
@@ -180,7 +180,7 @@ var ServerNetworkEvents = {
 					}
 					data = { can_access: 1, content: content };
 					
-					ige.network.send('adminlink', data);
+					ige.network.send('adminlink', data, clientId);
 				});
 			}
 		});
