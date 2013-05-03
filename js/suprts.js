@@ -73,3 +73,8 @@ $("#admin").submit(function(e) {
 	$("#admin-content").slideUp("1000");
 	$("#hoverlay").fadeOut("1000");
 });
+
+$(".hoverlay-close-btn").click(function() {
+	$("#admin-content").slideUp("1000");
+	$("#hoverlay").fadeOut("1000");
+});
