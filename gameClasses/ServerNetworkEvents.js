@@ -135,6 +135,44 @@ var ServerNetworkEvents = {
 		}
 		
 	},
+	
+	_onAdminLink: function(data, clientId) {
+		query = 'SELECT is_administrator FROM users WHERE id="'+ige.server.clients[clientId]+'" LIMIT 1;';
+		ige.mysql.query(query, function(err, rows) {
+			if(err || !rows[0].is_administrator) {
+				data = { can_access: 0 };
+				ige.network.send('adminlink', data);
+			} else {
+				query = "SELECT * FROM config";
+				ige.mysql.query(query, function(err, rows) {
+					content = {};
+					for(config in rows) {
+						content[rows[config].config_name] = rows[config].config_value; 
+					}
+					data = { can_access: 1, content: content };
+					
+					ige.network.send('adminlink', data);
+				});
+			}
+		});
+	},
+	
+	_onUpdateAdmin: function(data, clientId) {
+		query = 'SELECT is_administrator FROM users WHERE id="'+ige.server.clients[clientId]+'";';
+		ige.mysql.query(query, function(err, rows) {
+			if(!err && rows[0].is_administrator) {
+				for(config in data) {
+					query = 'UPDATE config SET config_value="'+data[config]+'" WHERE config_name="'+config+'";';
+					ige.mysql.query(query, function(err) {
+						if(err)
+							console.log("Unable to update value for "+config);
+						else
+							console.log("Setting '"+config+"' to '"+data[config]+"'");
+					});
+				}
+			}
+		});
+	},
 };
 
 if (typeof(module) !== 'undefined' && typeof(module.exports) !== 'undefined') { module.exports = ServerNetworkEvents; }

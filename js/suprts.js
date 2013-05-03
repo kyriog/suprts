@@ -55,3 +55,21 @@ $('#register').submit(function(e, h) {
 	} else
 		$("#register_confirm_password").popover('show');
 });
+
+// Handling administration link
+$("#admin-link").click(function() {
+	ige.network.send("adminlink");
+});
+
+// Handling administration save button
+$("#admin").submit(function(e) {
+	e.preventDefault();
+	content = {};
+	$("#admin :input").each(function() {
+		if(this.name)
+			content[this.name] = $(this).val();
+	});
+	ige.network.send("updateadmin",content);
+	$("#admin-content").slideUp("1000");
+	$("#hoverlay").fadeOut("1000");
+});

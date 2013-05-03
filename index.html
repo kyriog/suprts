@@ -21,40 +21,50 @@
 	<script src="js/bootstrap.min.js"></script>
 </head>
 <body>
-    <div id="hoverlay">
-    	<div id="hoverlay-content">
-    		<h1>SupRTS</h1>
-    		<div class="row-fluid">
- 	   		<div class="span6 login-div">
-		    		<form id="login">
-			    		<h2>Login</h2>
-		    			<input type="email" id="login_email" required placeholder="Email address" /><br />
-		    			<input type="password" id="login_password" required placeholder="Password" /><br />
-		    			<button type="submit" class="btn" id="login-btn">Login</button><br />
-		    			<span id="login_message"></span>
-		    		</form>
-		    	</div>
-		    	<div class="span6">
-		    		<form id="register">
-		    			<h2>Register</h2>
-		    			<input type="email" id="register_email" required placeholder="Email address" /><br />
-		    			<input type="password" id="register_password" required placeholder="Password" /><br />
-		    			<input type="password" id="register_confirm_password" required placeholder="Repeat password" /><br />
-		    			<select id="register_difficulty" required>
-		    				<option value="">Select your difficulty</option>
-		    				<option value="easy">Easy</option>
-		    				<option value="normal">Normal</option>
-		    				<option value="hard">Hard</option>
-		    			</select>
-		    			<button type="submit" class="btn" id="register-btn">Register</button><br />
-		    			<span id="register_message"></span>
-		    		</form>
-		    	</div>
-		</div>
-    	</div>
-    </div>
     <div id="top-buttons">
     	<a href="#" id="admin-link" style="display: none">Administration</a>
+    </div>
+    <div id="hoverlay">
+    	<div id="login-content">
+    		<h1>SupRTS</h1>
+    		<div class="row-fluid">
+	 	   		<div class="span6 login-div">
+					<form id="login">
+						<h2>Login</h2>
+						<input type="email" id="login_email" required placeholder="Email address" /><br />
+						<input type="password" id="login_password" required placeholder="Password" /><br />
+						<button type="submit" class="btn" id="login-btn">Login</button><br />
+						<span id="login_message"></span>
+					</form>
+				</div>
+				<div class="span6">
+					<form id="register">
+						<h2>Register</h2>
+						<input type="email" id="register_email" required placeholder="Email address" /><br />
+						<input type="password" id="register_password" required placeholder="Password" /><br />
+						<input type="password" id="register_confirm_password" required placeholder="Repeat password" /><br />
+						<select id="register_difficulty" required>
+							<option value="">Select your difficulty</option>
+							<option value="easy">Easy</option>
+							<option value="normal">Normal</option>
+							<option value="hard">Hard</option>
+						</select>
+						<button type="submit" class="btn" id="register-btn">Register</button><br />
+						<span id="register_message"></span>
+					</form>
+				</div>
+			</div>
+	    </div>
+		<div id="admin-content" style="display: none">
+			<h1>Administration</h1>
+			<form id="admin">
+				<div class="row">
+					<div class="span4">Start money</div>
+					<div class="span4"><input type="number" name="start_money" /></div>
+				</div>
+				<button type="submit" class="btn btn-primary admin-save">Save settings</button>
+			</form>
+		</div>
     </div>
     <script src="js/suprts.js"></script>
 </body>

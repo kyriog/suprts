@@ -39,6 +39,9 @@ var Server = IgeClass.extend({
 						ige.network.define('mapSection', self._onMapSection);
 						ige.network.define('playerNeuterConquest', self._onPlayerNeuterConquest);
 						
+						ige.network.define('adminlink', self._onAdminLink);
+						ige.network.define('updateadmin', self._onUpdateAdmin);
+						
 						ige.network.on('disconnect', self._onPlayerDisconnect);
 						
 						// Add the network stream component

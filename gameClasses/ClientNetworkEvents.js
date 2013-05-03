@@ -4,9 +4,10 @@ var ClientNetworkEvents = {
 	},
 	
 	_onPlayerLogin: function(data) {
-		$("#hoverlay").hide();
+		$("#hoverlay").fadeOut("1000");
+		$("#login-content").slideUp("1000");
 		if(data.is_admin) {
-			$("#admin-link").show();
+			$("#admin-link").fadeIn("500");
 		}
 	},
 	
@@ -113,7 +114,21 @@ var ClientNetworkEvents = {
 	
 	_onPlayerNeuterConquest: function (data)
 	{
-	}
+	},
+	
+	_onAdminLink: function(data) {
+		if(data.can_access) {
+			console.log(data);
+			for(config in data.content) {
+				console.log('#admin input[name="'+config+'"]');
+				console.log($('#admin input[name="'+config+'"]').val());
+				$('#admin input[name="'+config+'"]').val(data.content[config]);
+			}
+			
+			$("#hoverlay").fadeIn("1000");
+			$("#admin-content").slideDown("1000");
+		}
+	},
 };
 
 if (typeof(module) !== 'undefined' && typeof(module.exports) !== 'undefined') { module.exports = ClientNetworkEvents; }
