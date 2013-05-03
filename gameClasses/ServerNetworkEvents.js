@@ -19,7 +19,7 @@ var ServerNetworkEvents = {
 				ige.mysql.query(query, function(err, rows) {
 					if(!err) {
 						ige.server.clients[clientId] = rows.insertId;
-						clientData = { is_admin: 1 };
+						clientData = { is_admin: 0 };
 						ige.network.send('playerLogin', clientData);
 						// We should move these 3 lines to another method to avoid duplicate code
 						ige.server.characters[clientId] = new CharacterContainer().id(clientId).streamMode(1).mount(ige.server.TitleMap);
@@ -66,7 +66,8 @@ var ServerNetworkEvents = {
 		}
 	},
 	
-	_onPlayerDisconnect: function(clientId) {
+	_onPlayerDisconnect: function(data, clientId) {
+		console.log("Destroying character "+clientId);
 		delete(ige.server.clients[clientId]);
 		if (ige.server.characters[clientId]) 
 		{
@@ -156,7 +157,7 @@ var ServerNetworkEvents = {
 		
 	},
 	
-	_onAdminLink: function(data, clientId) {
+	_onAdminLink: function(clientId) {
 		query = 'SELECT is_administrator FROM users WHERE id="'+ige.server.clients[clientId]+'" LIMIT 1;';
 		ige.mysql.query(query, function(err, rows) {
 			if(err || !rows[0].is_administrator) {
