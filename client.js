@@ -131,6 +131,7 @@ var Client = IgeClass.extend(
 						.borderBottomColor('#666666')
 						.borderBottomWidth(1)
 						.backgroundPosition(0, 0)
+						.mouseUp(function() { ige.input.stopPropagation(); })
 						.mount(ige.client.uiScene);
 						
 						ige.client.obj[2] = new IgeUiEntity()
