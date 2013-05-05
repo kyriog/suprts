@@ -221,12 +221,10 @@ var Character = IgeEntity.extend(
 			
 			if( xChunk != this.xCurrentChunk || yChunk != this.yCurrentChunk)
 			{
-				var chunks = ige.server.world.getChunks(xChunk,yChunk,2);
-				console.log('chunks.length: ' + chunks.length);
-				for(var i = 0; i < chunks.length; i++)
+				ige.server.world.getChunks(xChunk,yChunk,2, function(c) 
 				{
-					ige.network.send('mapSection', chunks[i]);
-				}
+					ige.network.send('mapSection', c);
+				});
 				
 				this.xCurrentChunk = xChunk;
 				this.yCurrentChunk = yChunk;

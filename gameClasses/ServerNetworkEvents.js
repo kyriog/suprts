@@ -1,23 +1,29 @@
 var ServerNetworkEvents = {
-	_onPlayerRegister: function(data, clientId) {
+	_onPlayerRegister: function(data, clientId) 
+	{
 		var query = 'SELECT config_value FROM config WHERE config_name="start_money"';
-		ige.mysql.query(query, function(err, rows) {
-			if(!err) {
+		ige.mysql.query(query, function(err, rows) 
+		{
+			if(!err) 
+			{
 				var money = 0;
-				switch(data.difficulty) {
-				case "easy":
-					money = rows[0].config_value;
-					break;
-				case "normal":
-					money = rows[0].config_value / 2;
-					break;
-				case "hard":
-					money = rows[0].config_value / 10;
-					break; 
+				switch(data.difficulty) 
+				{
+					case "easy":
+						money = rows[0].config_value;
+						break;
+					case "normal":
+						money = rows[0].config_value / 2;
+						break;
+					case "hard":
+						money = rows[0].config_value / 10;
+						break; 
 				}
 				var query = 'INSERT INTO users (email, password, level, money) VALUES ("'+data.email+'", SHA1("'+data.password+'"), "'+data.difficulty+'", "'+money+'");';
-				ige.mysql.query(query, function(err, rows) {
-					if(!err) {
+				ige.mysql.query(query, function(err, rows) 
+				{
+					if(!err) 
+					{
 						ige.server.clients[clientId] = rows.insertId;
 						clientData = { is_admin: 0 };
 						ige.network.send('playerLogin', clientData, clientId);
@@ -25,27 +31,38 @@ var ServerNetworkEvents = {
 						ige.server.characters[clientId] = new CharacterContainer().id(clientId).streamMode(1).mount(ige.server.TitleMap);
 						ige.server.characters[clientId].translateTo(0,0,0);
 						ige.network.send('playerEntity', ige.server.characters[clientId].id(), clientId);
-					} else {
+					} 
+					else 
+					{
 						console.log(err);
 						ige.network.send('playerRegisterError', null, clientId);
 					}
 				});
-			} else {
+			} 
+			else 
+			{
 				console.log(err);
 				ige.network.send('playerRegisterError', null, clientId);
 			}
 		});
 	},
 	
-	_onPlayerLogin: function(data, clientId) {
+	_onPlayerLogin: function(data, clientId) 
+	{
 		var query = 'SELECT id, is_administrator FROM users WHERE email = "'+data.email+'" AND password = SHA1("'+data.password+'") LIMIT 1;';
-		ige.mysql.query(query, function(err, rows) {
-			if(err) {
+		ige.mysql.query(query, function(err, rows) 
+		{
+			if(err) 
+			{
 				console.log(err);
 				ige.network.send('playerLoginError', null, clientId);
-			} else if(rows.length == 0) 
+			} 
+			else if(rows.length == 0) 
+			{
 				ige.network.send('playerLoginError', null, clientId);
-			else {
+			}
+			else 
+			{
 				ige.server.clients[clientId] = rows[0].id;
 				clientData = { is_admin: rows[0].is_administrator };
 				ige.network.send('playerLogin', clientData, clientId);
@@ -57,13 +74,12 @@ var ServerNetworkEvents = {
 		});
 	},
 		
-	_onMapSection: function(clientId) {
-		var chunks = ige.server.world.getChunks(0,0,2);
-		console.log('chunks.length: ' + chunks.length);
-		for(var i = 0; i < chunks.length; i++)
+	_onMapSection: function(clientId) 
+	{
+		ige.server.world.getChunks(0,0,2, function(c) 
 		{
-			ige.network.send('mapSection', chunks[i]);
-		}
+			ige.network.send('mapSection', c);
+		});
 	},
 	
 	_onPlayerDisconnect: function(clientId) {
