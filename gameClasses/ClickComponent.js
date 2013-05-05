@@ -54,11 +54,13 @@ var ClickComponent = IgeClass.extend(
 	// Action
 	_mouseRight: function (event, x, y, button)
 	{
-		console.log('_mouseRight: ' + event + ' x:' + x + ' y:' + y );
-		var tilePoint = ige.$('TitleMap').mouseTileWorldXY().to2d();
-		var xTitle = tilePoint.x/40;
-		var yTitle = tilePoint.y/40;
-		ige.network.send('playerNeuterConquest', {x: xTitle,y: yTitle});
+		if(ige.client.activeButton) {
+			console.log('_mouseRight: ' + event + ' x:' + x + ' y:' + y );
+			var tilePoint = ige.$('TitleMap').mouseTileWorldXY().to2d();
+			var xTitle = tilePoint.x/40;
+			var yTitle = tilePoint.y/40;
+			ige.network.send("player"+$(ige.client.activeButton).attr("id"), {x: xTitle,y: yTitle});
+		}
 	},
 	
 	// Joker ^^

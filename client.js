@@ -44,8 +44,6 @@ var Client = IgeClass.extend(
 						ige.network.define('characterMove', self._onCharacterMove);
 						ige.network.define('mapSection', self._onMapSection);
 						
-						ige.network.define('playerNeuterConquest', self._onPlayerNeuterConquest);
-						
 						ige.network.define('adminlink', self._onAdminLink);
 						
 						// Setup the network stream handler

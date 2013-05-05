@@ -122,10 +122,6 @@ var ClientNetworkEvents = {
 		ige.client.TextureMap.cacheForceFrame();
 	},
 	
-	_onPlayerNeuterConquest: function (data)
-	{
-	},
-	
 	_onAdminLink: function(data) {
 		if(data.can_access) {
 			for(config in data.content) {
