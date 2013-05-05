@@ -35,7 +35,9 @@ var World = IgeClass.extend(
 				}
 				else
 				{	
-					var c = eval('(' + rows[0].data + ')');
+					var c = new Chunk();
+					var c1 = eval('(' + rows[0].data + ')');
+					extend(c,c1);
 					self.chunksCache[x+' '+y] = c;
 					callback(c);
 				}
@@ -78,6 +80,14 @@ var World = IgeClass.extend(
 	// TODO: Implements persistence
 	UpdateChunk: function(chunk)
 	{
+		var query = 'UPDATE chunks SET data = \''+JSON.stringify(chunk)+'\' WHERE x = "'+chunk.xChunk+'" AND y = "'+chunk.yChunk+'"';
+		ige.mysql.query(query, function(err, rows) 
+		{
+			if(err)
+			{
+				console.log(err);
+			}
+		});
 	}
 	
 });
