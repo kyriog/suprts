@@ -112,7 +112,7 @@ var ServerNetworkEvents = {
 		}
 	},
 	
-	_onPlayerNeuterConquest: function(data, clientId)
+	_onPlayerConquerAction: function(data, clientId)
 	{
 		if(ige.server.characters[clientId]) 
 		{

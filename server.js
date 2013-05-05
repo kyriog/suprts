@@ -38,7 +38,7 @@ var Server = IgeClass.extend({
 						
 						ige.network.define('characterMove');
 						ige.network.define('mapSection', self._onMapSection);
-						ige.network.define('playerNeuterConquest', self._onPlayerNeuterConquest);
+						ige.network.define('playerConquerAction', self._onPlayerConquerAction);
 						
 						ige.network.define('adminlink', self._onAdminLink);
 						ige.network.define('updateadmin', self._onUpdateAdmin);

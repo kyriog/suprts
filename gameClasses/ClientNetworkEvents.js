@@ -6,6 +6,7 @@ var ClientNetworkEvents = {
 	_onPlayerLogin: function(data) {
 		$("#hoverlay").fadeOut("1000");
 		$("#login-content").slideUp("1000");
+		$("#action-bar").fadeIn("500");
 		$("#top-buttons").fadeIn("500");
 		if(data.is_admin) {
 			$("#admin-link").show();
@@ -119,10 +120,6 @@ var ClientNetworkEvents = {
 		}
 		
 		ige.client.TextureMap.cacheForceFrame();
-	},
-	
-	_onPlayerNeuterConquest: function (data)
-	{
 	},
 	
 	_onAdminLink: function(data) {

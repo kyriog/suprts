@@ -62,6 +62,19 @@ $("#logout-link").click(function() {
 	$("#login-content").slideDown("1000");
 	$("#admin-link").fadeOut("1000");
 	$("#top-buttons").fadeOut("1000");
+	$("#action-bar").fadeOut("500", function() {
+		if(ige.client.activeButton) {
+			$(ige.client.activeButton).removeClass("clicked");
+		}
+	});
+});
+
+// Handling action bar actions
+$("#action-bar .click").click(function() {
+	if(ige.client.activeButton)
+		$(ige.client.activeButton).removeClass("clicked");
+	ige.client.activeButton = this;
+	$(this).addClass("clicked");
 });
 
 // Handling administration link
