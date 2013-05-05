@@ -109,7 +109,7 @@ var Client = IgeClass.extend(
 						var GrassTexIndex = self.TextureMap.addTexture(self.gameTexture.grassSheet);
 
 						self.setupGui();
-						ige.network.send('mapSection');
+						
 					});
 				}
 			});

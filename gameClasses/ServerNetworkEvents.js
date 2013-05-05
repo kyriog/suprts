@@ -1,4 +1,5 @@
-var ServerNetworkEvents = {
+var ServerNetworkEvents = 
+{
 	_onPlayerRegister: function(data, clientId) 
 	{
 		var query = 'SELECT config_value FROM config WHERE config_name="start_money"';
@@ -70,6 +71,7 @@ var ServerNetworkEvents = {
 				ige.server.characters[clientId] = new CharacterContainer().id(clientId).streamMode(1).mount(ige.server.TitleMap);
 				ige.server.characters[clientId].translateTo(0,0,0);
 				ige.network.send('playerEntity', ige.server.characters[clientId].id(), clientId);
+				ServerNetworkEvents._onMapSection(clientId);
 			}
 		});
 	},
@@ -169,7 +171,7 @@ var ServerNetworkEvents = {
 				var chunk = ige.server.world.chunksCache[xChunk + ' ' + yChunk];
 				chunk.getTitle(xTitle,yTitle).owned = true;
 				chunk.getTitle(xTitle,yTitle).owner = clientId;
-				ige.server.world.SaveChunk(chunk);
+				ige.server.world.UpdateChunk(chunk);
 				ige.network.send('mapSection', chunk);
 			}
 			else
