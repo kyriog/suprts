@@ -12,7 +12,6 @@ var Client = IgeClass.extend(
 		self.gameTexture = {};
 		self.gameTexture.dirtSheet = new IgeCellSheet('./assets/textures/tiles/dirtSheet.png', 4, 1);
 		self.gameTexture.grassSheet = new IgeCellSheet('./assets/textures/tiles/grassSheet.png', 4, 1);
-		self.gameTexture.arrosoir = new IgeTexture('./assets/arrosoir.png');
 
 		// Enable networking
 		ige.addComponent(IgeNetIoComponent);
@@ -108,48 +107,12 @@ var Client = IgeClass.extend(
 						var DirtTexIndex = self.TextureMap.addTexture(self.gameTexture.dirtSheet);
 						var GrassTexIndex = self.TextureMap.addTexture(self.gameTexture.grassSheet);
 
-						self.setupGui();
 						ige.network.send('mapSection');
 					});
 				}
 			});
 		});
 	},
-	
-	setupGui: function()
-	{
-		
-		
-		ige.client.obj[1] = new IgeUiEntity()
-						.id('topBar')
-						.depth(10)
-						.backgroundColor('#474747')
-						.left(0)
-						.bottom(22) // IN DEBUG, SET TO 0 at RELEASE
-						.width('100%')
-						.height(60)
-						.borderBottomColor('#666666')
-						.borderBottomWidth(1)
-						.backgroundPosition(0, 0)
-						.mouseUp(function() { ige.input.stopPropagation(); })
-						.mount(ige.client.uiScene);
-						
-						ige.client.obj[2] = new IgeUiEntity()
-						.id('entityButton')
-						.depth(10)
-						.top(6)
-						.left(15)
-						.width(40)
-						.height(40)
-						.cell(1)
-						.backgroundImage(ige.client.gameTexture.arrosoir, 'no-repeat')
-						.mouseOver(function () {this.backgroundColor('#49ceff'); ige.input.stopPropagation(); })
-						.mouseOut(function () {this.backgroundColor('#474747'); ige.input.stopPropagation(); })
-						.mouseUp(function () { console.log('Clicked ' + this.id()); ige.input.stopPropagation(); })
-						.mount(ige.client.obj[1]);
-						
-		
-	}
 });
 
 if (typeof(module) !== 'undefined' && typeof(module.exports) !== 'undefined') { module.exports = Client; }
