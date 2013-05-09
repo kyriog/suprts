@@ -1,2 +1,5 @@
 # Ignoring gedit temp files
 *~
+
+# Ignoring database config file
+/ServerConfig.js
