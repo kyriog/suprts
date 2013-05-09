@@ -19,11 +19,11 @@ var ServerNetworkEvents =
 			break;
 			
 			case 'Harvest':
-				HarvestAction.onHarvestTile(data.x,data.y,data.harvestOption,clientId);
+				HarvestAction.onHarvestTile(data.x,data.y,data.arg,clientId);
 			break;
 			
 			case 'Plant':
-				PlantAction.onPlantAction(data.x,data.y,data.plant,clientId);
+				PlantAction.onPlantAction(data.x,data.y,data.arg,clientId);
 			break;
 		}
 	},

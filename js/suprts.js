@@ -102,6 +102,18 @@ $("#action-bar .click").click(function()
 	$(this).addClass("clicked");
 });
 
+$("#action-bar .subclick").click(function()
+{
+	if(ige.client.activeButton)
+	{
+		$(ige.client.activeButton).removeClass("clicked");
+	}
+	ige.client.activeButton = $(this).parent().parent().children()[0];
+	$(ige.client.activeButton).attr("src",$(this).attr("src"));
+	$(ige.client.activeButton).attr("data-arg",$(this).attr("data-arg"));
+	$(ige.client.activeButton).addClass("clicked");
+});
+
 // Handling administration link
 $("#admin-link").click(function() 
 {

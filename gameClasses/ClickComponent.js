@@ -58,7 +58,10 @@ var ClickComponent = IgeClass.extend(
 			var tilePoint = ige.$('TitleMap').mouseTileWorldXY().to2d();
 			var xTitle = tilePoint.x/40;
 			var yTitle = tilePoint.y/40;
-			ige.network.send("onRightClick",{x: xTitle,y: yTitle,action: $(ige.client.activeButton).attr("id")});
+			var data = {x: xTitle,y: yTitle,action: $(ige.client.activeButton).attr("id")};
+			if($(ige.client.activeButton).attr("data-arg"))
+				data.arg = $(ige.client.activeButton).attr("data-arg");
+			ige.network.send("onRightClick",data);
 		}
 	},
 	
