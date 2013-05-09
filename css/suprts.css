@@ -83,10 +83,19 @@ h1 {
 	display: none;
 }
 
-#action-bar .click {
+#action-bar img, #action-bar>div {
 	height: 40px;
 	width: 40px;
-	margin-right: 7px;
+}
+
+#action-bar>img, #action-bar>div {
+	position: relative;
+	z-index: 2;
+	margin-right: 10px;
+	float: left;
+}
+
+#action-bar .click {
 	transition: all 100ms linear;
 }
 
@@ -98,4 +107,30 @@ h1 {
 #action-bar .clicked {
 	transition: all 100ms linear;
 	box-shadow: 0 0 0 7px #2D84FC !important;
+}
+
+#action-bar .action-container {
+	position: absolute;
+	bottom: 40px;
+	width: 40px;
+	background-color: #474747;
+	padding: 0 10px;
+	overflow: hidden;
+	line-height: 50px;
+	height: 0;
+	transition: height .5s;
+	z-index: 1;
+	margin-left: -7px;
+}
+
+#action-bar .hover:hover .action-container {
+	padding: 5px 10px;
+}
+
+#action-bar .hover:hover .harvest {
+	height: 110px;
+}
+
+#action-bar .hover:hover .plant {
+	height: 150px;
 }
