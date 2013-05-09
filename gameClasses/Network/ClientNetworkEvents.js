@@ -1,14 +1,19 @@
-var ClientNetworkEvents = {
-	_onPlayerRegisterError: function() {
+var ClientNetworkEvents = 
+{
+	_onPlayerRegisterError: function() 
+	{
 		$("#register-btn").popover("show");
 	},
 	
-	_onPlayerLogin: function(data) {
+	
+	_onPlayerLogin: function(data) 
+	{
 		$("#hoverlay").fadeOut("1000");
 		$("#login-content").slideUp("1000");
 		$("#action-bar").fadeIn("500");
 		$("#top-buttons").fadeIn("500");
-		if(data.is_admin) {
+		if(data.is_admin) 
+		{
 			$("#admin-link").show();
 		}
 		
@@ -21,34 +26,45 @@ var ClientNetworkEvents = {
 		$("#register_difficulty").val("");
 	},
 	
-	_onPlayerLoginError: function() {
+	
+	_onPlayerLoginError: function() 
+	{
 		$("#login-btn").popover("show");
 	},
 	
-	/**
-	 * Is called when a network packet with the "playerEntity" command
-	 * is received by the client from the server. This is the server telling
-	 * us which entity is our player entity so that we can track it with
-	 * the main camera!
-	 * @param data The data object that contains any data sent from the server.
-	 * @private
-	 */
+	
+	_onAdminLink: function(data) 
+	{
+		if(data.can_access) 
+		{
+			for(config in data.content) 
+			{
+				$('#admin input[name="'+config+'"]').val(data.content[config]);
+			}
+			
+			$("#hoverlay").fadeIn("1000");
+			$("#admin-content").slideDown("1000");
+		}
+	},
+	
+	
 	_onPlayerEntity: function (data) 
 	{
-		if (ige.$(data)) 
+		if (ige.$(data.id)) 
 		{
-			ige.client.vp1.camera.trackTranslate(ige.$(data), 50);
+			ige.client.vp1.camera.trackTranslate(ige.$(data.id), 50);
+			ige.client.playerId = data.dbId;
 		} 
 		else 
 		{
 			var self = this;
 			self._eventListener = ige.network.stream.on('entityCreated', function (entity) 
 			{
-				if (entity.id() === data) 
+				if (entity.id() === data.id) 
 				{
-					ige.client.playerId = entity.id();
+					ige.client.playerId = data.dbId;
 					// Tell the camera to track out player entity
-					ige.client.vp1.camera.trackTranslate(ige.$(data), 50);
+					ige.client.vp1.camera.trackTranslate(ige.$(data.id), 50);
 
 					// Turn off the listener for this event now that we
 					// have found and started tracking our player entity
@@ -64,11 +80,13 @@ var ClientNetworkEvents = {
 		}
 	},
 	
+	
 	_onCharacterMove: function (data)
 	{
 		console.log('Network Message: _onCharacterMove');
 		ige.$(data.id).walkTo(data.x, data.y);
 	},
+	
 	
 	_onMapSection: function (data)
 	{
@@ -122,15 +140,16 @@ var ClientNetworkEvents = {
 		ige.client.TextureMap.cacheForceFrame();
 	},
 	
-	_onAdminLink: function(data) {
-		if(data.can_access) {
-			for(config in data.content) {
-				$('#admin input[name="'+config+'"]').val(data.content[config]);
-			}
-			
-			$("#hoverlay").fadeIn("1000");
-			$("#admin-content").slideDown("1000");
-		}
+	
+	_onRightClick: function(data, clientId)
+	{
+	
+	},
+	
+	
+	_onLeftClick: function(data, clientId)
+	{
+	
 	},
 };
 

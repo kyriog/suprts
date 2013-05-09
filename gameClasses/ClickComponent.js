@@ -46,27 +46,26 @@ var ClickComponent = IgeClass.extend(
 	// Deplacement
 	_mouseLeft: function (event, x, y, button)
 	{
-		console.log('_mouseLeft: ' + event + ' x:' + x + ' y:' + y );
 		var tilePoint = ige.$('TitleMap').mouseTileWorldXY().to2d();	
-		ige.network.send('playerMove', {x: tilePoint.x,y: tilePoint.y});
+		ige.network.send('onLeftClick', {x: tilePoint.x,y: tilePoint.y});
 	},
 	
 	// Action
 	_mouseRight: function (event, x, y, button)
 	{
-		if(ige.client.activeButton) {
-			console.log('_mouseRight: ' + event + ' x:' + x + ' y:' + y );
+		if(ige.client.activeButton) 
+		{
 			var tilePoint = ige.$('TitleMap').mouseTileWorldXY().to2d();
 			var xTitle = tilePoint.x/40;
 			var yTitle = tilePoint.y/40;
-			ige.network.send("player"+$(ige.client.activeButton).attr("id"), {x: xTitle,y: yTitle});
+			ige.network.send("onRightClick",{x: xTitle,y: yTitle,action: $(ige.client.activeButton).attr("id")});
 		}
 	},
 	
 	// Joker ^^
 	_mouseMid: function (event, x, y, button)
 	{
-		console.log('_mouseMid: ' + event + ' x:' + x + ' y:' + y );
+		
 	}
 });
 

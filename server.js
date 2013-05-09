@@ -34,7 +34,6 @@ var Server = IgeClass.extend({
 						ige.network.define('playerLoginError');
 						ige.network.define('playerLogout', self._onPlayerLogout);
 						ige.network.define('playerEntity');
-						ige.network.define('playerMove', self._onPlayerMove);
 						
 						ige.network.define('characterMove');
 						ige.network.define('mapSection', self._onMapSection);
@@ -44,6 +43,10 @@ var Server = IgeClass.extend({
 						ige.network.define('updateadmin', self._onUpdateAdmin);
 						
 						ige.network.on('disconnect', self._onPlayerDisconnect);
+						
+						
+						ige.network.define('onRightClick', self._onRightClick);
+						ige.network.define('onLeftClick', self._onLeftClick);
 						
 						// Add the network stream component
 						ige.network.addComponent(IgeStreamComponent)

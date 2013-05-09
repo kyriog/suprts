@@ -64,6 +64,20 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`id`, `email`, `password`, `is_administrator`, `level`, `money`) VALUES
 (1, 'admin@local', 'd033e22ae348aeb5660fc2140aec35850c4da997', 1, 'easy', 1000);
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `chunks`
+--
+
+CREATE TABLE IF NOT EXISTS `chunks` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `x` int(10) NOT NULL,
+  `y` int(10) NOT NULL,
+  `data` TEXT NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

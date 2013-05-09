@@ -1,7 +1,7 @@
 // Define our player character container classes
-var CharacterContainer = IgeEntity.extend(
+var Player = IgeEntity.extend(
 {
-	classId: 'CharacterContainer',
+	classId: 'Player',
 
 	init: function () 
 	{
@@ -16,13 +16,7 @@ var CharacterContainer = IgeEntity.extend(
 		self.size3d(20, 20, 40);
 
 		// Create a character entity as a child of this container
-		self.character = new Character()
-			.id(this.id() + '_character')
-			.setType(3)
-			.drawBounds(false)
-			.drawBoundsData(false)
-			.originTo(0.5, 0.6, 0.5)
-			.mount(this);
+		self.character = new Character().id(this.id() + '_character').setType(3).drawBounds(false).drawBoundsData(false).originTo(0.5, 0.6, 0.5).mount(this);
 	},
 
 	/**
@@ -115,4 +109,4 @@ var CharacterContainer = IgeEntity.extend(
 	}
 });
 
-if (typeof(module) !== 'undefined' && typeof(module.exports) !== 'undefined') { module.exports = CharacterContainer; }
+if (typeof(module) !== 'undefined' && typeof(module.exports) !== 'undefined') { module.exports = Player; }

@@ -1,7 +1,8 @@
 var Client = IgeClass.extend(
 {
 	classId: 'Client',
-	init: function () {
+	init: function () 
+	{
 		// Remember to delete this when going to production mode, it's a debug thing!
 		ige.showStats(1);
 		ige.globalSmoothing(true);
@@ -37,14 +38,20 @@ var Client = IgeClass.extend(
 						self.chunksCache = new Object();
 						
 						// Setup the network command listeners
+						ige.network.define('onRightClick', self._onRightClick);
+						ige.network.define('onLeftClick', self._onLeftClick);
+						
 						ige.network.define('playerRegisterError', self._onPlayerRegisterError);
 						ige.network.define('playerLogin', self._onPlayerLogin);
 						ige.network.define('playerLoginError', self._onPlayerLoginError);
-						ige.network.define('playerEntity', self._onPlayerEntity); // Defined in ./gameClasses/ClientNetworkEvents.js
+						ige.network.define('playerEntity', self._onPlayerEntity);
 						ige.network.define('characterMove', self._onCharacterMove);
 						ige.network.define('mapSection', self._onMapSection);
 						
 						ige.network.define('adminlink', self._onAdminLink);
+						
+						
+						
 						
 						// Setup the network stream handler
 						ige.network.addComponent(IgeStreamComponent).stream.renderLatency(80).stream.on('entityCreated', function (entity) {} );
@@ -105,7 +112,6 @@ var Client = IgeClass.extend(
 						var DirtTexIndex = self.TextureMap.addTexture(self.gameTexture.dirtSheet);
 						var GrassTexIndex = self.TextureMap.addTexture(self.gameTexture.grassSheet);
 
-						ige.network.send('mapSection');
 					});
 				}
 			});

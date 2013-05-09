@@ -1,5 +1,46 @@
 var ServerNetworkEvents = 
 {
+
+	_onRightClick: function(data, clientId)
+	{
+		console.log('_onRightClick: function('+data+', '+clientId+')');
+		switch(data.action)
+		{
+			case 'Attack':
+				AttackAction.onAttackTile(data.x,data.y,clientId);
+			break;
+			
+			case 'Fertilize':
+				FertilizeAction.onFertilizeTitle(data.x,data.y,clientId);
+			break;
+			
+			case 'Watering':
+				WateringAction.onWateringTile(data.x,data.y,clientId);
+			break;
+			
+			case 'Harvest':
+				HarvestAction.onHarvestTile(data.x,data.y,data.harvestOption,clientId);
+			break;
+			
+			case 'Plant':
+				PlantAction.onPlantAction(data.x,data.y,data.plant,clientId);
+			break;
+		}
+	},
+	
+	
+	_onLeftClick: function(data, clientId)
+	{
+		console.log('_onLeftClick: function('+data+', '+clientId+')');
+		if(ige.server.characters[clientId]) 
+		{		
+			console.log('Walking ' + clientId + ' to (' + data.x + ',' + data.y + ')');
+			ige.network.send('characterMove', { id : ige.server.characters[clientId].id() ,x : data.x ,y : data.y });
+			ige.server.characters[clientId].walkTo(data.x, data.y);
+		}
+	},
+	
+	
 	_onPlayerRegister: function(data, clientId) 
 	{
 		var query = 'SELECT config_value FROM config WHERE config_name="start_money"';
@@ -29,9 +70,9 @@ var ServerNetworkEvents =
 						clientData = { is_admin: 0 };
 						ige.network.send('playerLogin', clientData, clientId);
 						// We should move these 3 lines to another method to avoid duplicate code
-						ige.server.characters[clientId] = new CharacterContainer().id(clientId).streamMode(1).mount(ige.server.TitleMap);
+						ige.server.characters[clientId] = new Player().id(clientId).streamMode(1).mount(ige.server.TitleMap);
 						ige.server.characters[clientId].translateTo(0,0,0);
-						ige.network.send('playerEntity', ige.server.characters[clientId].id(), clientId);
+						ige.network.send('playerEntity', {id: ige.server.characters[clientId].id(), dbId: rows.insertId}, clientId);
 					} 
 					else 
 					{
@@ -47,6 +88,7 @@ var ServerNetworkEvents =
 			}
 		});
 	},
+	
 	
 	_onPlayerLogin: function(data, clientId) 
 	{
@@ -68,14 +110,15 @@ var ServerNetworkEvents =
 				clientData = { is_admin: rows[0].is_administrator };
 				ige.network.send('playerLogin', clientData, clientId);
 				// We should move these 3 lines to another method to avoid duplicate code
-				ige.server.characters[clientId] = new CharacterContainer().id(clientId).streamMode(1).mount(ige.server.TitleMap);
+				ige.server.characters[clientId] = new Player().id(clientId).streamMode(1).mount(ige.server.TitleMap);
 				ige.server.characters[clientId].translateTo(0,0,0);
-				ige.network.send('playerEntity', ige.server.characters[clientId].id(), clientId);
+				ige.network.send('playerEntity', {id: ige.server.characters[clientId].id(), dbId: rows[0].id}, clientId);
 				ServerNetworkEvents._onMapSection(clientId);
 			}
 		});
 	},
-		
+	
+	
 	_onMapSection: function(clientId) 
 	{
 		ige.server.world.getChunks(0,0,2, function(c) 
@@ -84,18 +127,24 @@ var ServerNetworkEvents =
 		});
 	},
 	
-	_onPlayerDisconnect: function(clientId) {
+	
+	_onPlayerDisconnect: function(clientId) 
+	{
 		delete(ige.server.clients[clientId]);
+		
 		if (ige.server.characters[clientId]) 
 		{
 			ige.server.characters[clientId].destroy();
 			delete ige.server.characters[clientId];
 		}
 	},
+	
 	
 	// Same as _onPlayerDisconnect, but seems we cannot share same event for a define() and a on() event
-	_onPlayerLogout: function(data, clientId) {
+	_onPlayerLogout: function(data, clientId) 
+	{
 		delete(ige.server.clients[clientId]);
+		
 		if (ige.server.characters[clientId]) 
 		{
 			ige.server.characters[clientId].destroy();
@@ -103,97 +152,25 @@ var ServerNetworkEvents =
 		}
 	},
 	
-	_onPlayerMove: function (data, clientId) 
-	{
-		if(ige.server.characters[clientId]) 
-		{		
-			console.log('Walking ' + clientId + ' to (' + data.x + ',' + data.y + ')');
-			ige.network.send('characterMove', { id : ige.server.characters[clientId].id() ,x : data.x ,y : data.y });
-			ige.server.characters[clientId].walkTo(data.x, data.y);
-			
-		}
-	},
 	
-	_onPlayerConquerAction: function(data, clientId)
+	_onAdminLink: function(nodata, clientId) 
 	{
-		if(ige.server.characters[clientId]) 
-		{
-			var xChunk = data.x - data.x%10;
-			var yChunk = data.y - data.y%10;
-			
-			if(data.x < 0)
-			{
-				xChunk = ( Math.ceil(data.x / 10) * 10);
-				if(data.x % 10 != 0)
-				{
-					xChunk = xChunk - 10;
-				}
-			}
-			
-			if(data.y < 0)
-			{
-				yChunk = ( Math.ceil(data.y / 10) * 10);
-				if(data.y % 10 != 0)
-				{
-					yChunk = yChunk - 10;
-				}
-			}
-			
-			
-			var xTitle = xChunk - data.x;
-			var yTitle = yChunk - data.y;
-			
-			if(xTitle < 0)
-			{
-				xTitle = xTitle * -1;
-			}
-			
-			if(yTitle < 0)
-			{
-				yTitle = yTitle * -1;
-			}
-
-			var characterCoordinate = ige.server.characters[clientId].worldPosition().thisTo2d();
-			var xCharacter = Math.round( characterCoordinate.x/40 );
-			var yCharacter = Math.round( characterCoordinate.y/40 );
-			var Distance = Math.abs(xCharacter - data.x) + Math.abs(yCharacter - data.y);
-
-			/*
-				console.log('data.x: ' + data.x + ' data.y: ' + data.y);
-				console.log('xChunk: ' + xChunk + ' yChunk: ' + yChunk);
-				console.log('xTitle: ' + xTitle + ' yTitle: ' + yTitle);
-				console.log('xCharacter: ' + xCharacter + ' yCharacter: ' + yCharacter);
-				console.log('Distance: ' + Distance);
-			*/
-			
-			if( Distance <= 2 )
-			{
-				var chunk = ige.server.world.chunksCache[xChunk + ' ' + yChunk];
-				chunk.getTitle(xTitle,yTitle).owned = true;
-				chunk.getTitle(xTitle,yTitle).owner = clientId;
-				ige.server.world.UpdateChunk(chunk);
-				ige.network.send('mapSection', chunk);
-			}
-			else
-			{
-				console.log('Too far for conquest title');		
-			}
-			
-		}
-		
-	},
-	
-	_onAdminLink: function(nodata, clientId) {
 		query = 'SELECT is_administrator FROM users WHERE id="'+ige.server.clients[clientId]+'" LIMIT 1;';
-		ige.mysql.query(query, function(err, rows) {
-			if(err || !rows[0].is_administrator) {
+		ige.mysql.query(query, function(err, rows) 
+		{
+			if(err || !rows[0].is_administrator) 
+			{
 				data = { can_access: 0 };
 				ige.network.send('adminlink', data, clientId);
-			} else {
+			} 
+			else 
+			{
 				query = "SELECT * FROM config";
-				ige.mysql.query(query, function(err, rows) {
+				ige.mysql.query(query, function(err, rows) 
+				{
 					content = {};
-					for(config in rows) {
+					for(config in rows) 
+					{
 						content[rows[config].config_name] = rows[config].config_value; 
 					}
 					data = { can_access: 1, content: content };
@@ -204,17 +181,27 @@ var ServerNetworkEvents =
 		});
 	},
 	
-	_onUpdateAdmin: function(data, clientId) {
+	
+	_onUpdateAdmin: function(data, clientId) 
+	{
 		query = 'SELECT is_administrator FROM users WHERE id="'+ige.server.clients[clientId]+'";';
-		ige.mysql.query(query, function(err, rows) {
-			if(!err && rows[0].is_administrator) {
-				for(config in data) {
+		ige.mysql.query(query, function(err, rows) 
+		{
+			if(!err && rows[0].is_administrator) 
+			{
+				for(config in data) 
+				{
 					query = 'UPDATE config SET config_value="'+data[config]+'" WHERE config_name="'+config+'";';
-					ige.mysql.query(query, function(err) {
+					ige.mysql.query(query, function(err) 
+					{
 						if(err)
+						{
 							console.log("Unable to update value for "+config);
+						}
 						else
+						{
 							console.log("Setting '"+config+"' to '"+data[config]+"'");
+						}
 					});
 				}
 			}
