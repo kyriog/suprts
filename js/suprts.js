@@ -92,8 +92,12 @@ $("#logout-link").click(function()
 });
 
 // Handling action bar actions
-$("#action-bar .click").click(function() 
+$("#action-bar .action").click(function() 
 {
+	if($(this).hasClass("arg") && !$(this).attr("data-arg"))
+	{
+		return;
+	}
 	if(ige.client.activeButton)
 	{
 		$(ige.client.activeButton).removeClass("clicked");
@@ -111,6 +115,7 @@ $("#action-bar .subclick").click(function()
 	ige.client.activeButton = $(this).parent().parent().children()[0];
 	$(ige.client.activeButton).attr("src",$(this).attr("src"));
 	$(ige.client.activeButton).attr("data-arg",$(this).attr("data-arg"));
+	$(ige.client.activeButton).addClass("click");
 	$(ige.client.activeButton).addClass("clicked");
 });
 
