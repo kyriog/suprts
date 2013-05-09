@@ -1,81 +1,81 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0" />
-	<meta name="apple-mobile-web-app-status-bar-style" content="black">
-	<meta name="game-engine-origin" content="http://www.isogenicengine.com">
-	<meta http-equiv="X-UA-Compatible" content="IE=9" >
-	<title>SupFarm</title>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="game-engine-origin" content="http://www.isogenicengine.com">
+		<meta http-equiv="X-UA-Compatible" content="IE=9" >
+		<title>SupFarm</title>
 
-	<!-- STYLES -->
-	<link href="./css/default.css" rel="stylesheet" type="text/css" />
-	<link href="./css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-	<link href="./css/suprts.css" rel="stylesheet" type="text/css" />
+		<!-- STYLES -->
+		<link href="./css/default.css" rel="stylesheet" type="text/css" />
+		<link href="./css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+		<link href="./css/suprts.css" rel="stylesheet" type="text/css" />
 
-	<!-- Isogenic Loader -->
-	<script type="text/javascript">var igeRoot = '../engine/';</script>
-	<script type="text/javascript" src="../engine/loader.js"></script>
-	<script src="js/jquery-1.9.1.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-</head>
-<body>
-    <div id="top-buttons">
-    	<a href="#" id="admin-link" style="display: none">Administration</a>
-    	<a href="#" id="logout-link" class="first">Logout</a>
-    </div>
-    <div id="action-bar">
-    	<img class="click" src="assets/target.png" id="Attack" />
-    	<img class="click" src="assets/watering-can.jpg" id="Watering" />
-    	<img class="click" src="assets/sword.png" id="Fertilize" />
-		<img class="click" src="assets/sword.png" id="Harvest" />
-		<img class="click" src="assets/sword.png" id="Plant" />
-    </div>
-    <div id="hoverlay">
-    	<div id="login-content">
-    		<h1>SupRTS</h1>
-    		<div class="row-fluid">
-	 	   		<div class="span6 login-div">
-					<form id="login">
-						<h2>Login</h2>
-						<input type="email" id="login_email" required placeholder="Email address" /><br />
-						<input type="password" id="login_password" required placeholder="Password" /><br />
-						<button type="submit" class="btn" id="login-btn">Login</button><br />
-						<span id="login_message"></span>
-					</form>
-				</div>
-				<div class="span6">
-					<form id="register">
-						<h2>Register</h2>
-						<input type="email" id="register_email" required placeholder="Email address" /><br />
-						<input type="password" id="register_password" required placeholder="Password" /><br />
-						<input type="password" id="register_confirm_password" required placeholder="Repeat password" /><br />
-						<select id="register_difficulty" required>
-							<option value="">Select your difficulty</option>
-							<option value="easy">Easy</option>
-							<option value="normal">Normal</option>
-							<option value="hard">Hard</option>
-						</select>
-						<button type="submit" class="btn" id="register-btn">Register</button><br />
-						<span id="register_message"></span>
-					</form>
+		<!-- Isogenic Loader -->
+		<script type="text/javascript">var igeRoot = '../engine/';</script>
+		<script type="text/javascript" src="../engine/loader.js"></script>
+		<script src="js/jquery-1.9.1.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+	</head>
+	<body>
+		<div id="top-buttons">
+			<a href="#" id="admin-link" style="display: none">Administration</a>
+			<a href="#" id="logout-link" class="first">Logout</a>
+		</div>
+		<div id="action-bar">
+			<img class="click" src="assets/target.png" id="Attack" />
+			<img class="click" src="assets/watering-can.jpg" id="Watering" />
+			<img class="click" src="assets/sword.png" id="Fertilize" />
+			<img class="click" src="assets/sword.png" id="Harvest" />
+			<img class="click" src="assets/sword.png" id="Plant" />
+		</div>
+		<div id="hoverlay">
+			<div id="login-content">
+				<h1>SupRTS</h1>
+				<div class="row-fluid">
+		 	   		<div class="span6 login-div">
+						<form id="login">
+							<h2>Login</h2>
+							<input type="email" id="login_email" required placeholder="Email address" /><br />
+							<input type="password" id="login_password" required placeholder="Password" /><br />
+							<button type="submit" class="btn" id="login-btn">Login</button><br />
+							<span id="login_message"></span>
+						</form>
+					</div>
+					<div class="span6">
+						<form id="register">
+							<h2>Register</h2>
+							<input type="email" id="register_email" required placeholder="Email address" /><br />
+							<input type="password" id="register_password" required placeholder="Password" /><br />
+							<input type="password" id="register_confirm_password" required placeholder="Repeat password" /><br />
+							<select id="register_difficulty" required>
+								<option value="">Select your difficulty</option>
+								<option value="easy">Easy</option>
+								<option value="normal">Normal</option>
+								<option value="hard">Hard</option>
+							</select>
+							<button type="submit" class="btn" id="register-btn">Register</button><br />
+							<span id="register_message"></span>
+						</form>
+					</div>
 				</div>
 			</div>
-    	</div>
-		<div id="admin-content" style="display: none">
-			<h1>Administration</h1>
-			<button class="close hoverlay-close hoverlay-close-btn">&times;</button>
-			<form id="admin">
-				<div class="row">
-					<div class="span4"><label for="start_money">Start money</label></div>
-					<div class="span4"><input type="number" name="start_money" id="start_money" /></div>
-				</div>
-				<button type="submit" class="btn btn-primary hoverlay-bottom-btn">Save settings</button>
-				<button class="btn btn-inverse hoverlay-close-btn hoverlay-bottom-btn">Close without saving</button>
-			</form>
+			<div id="admin-content" style="display: none">
+				<h1>Administration</h1>
+				<button class="close hoverlay-close hoverlay-close-btn">&times;</button>
+				<form id="admin">
+					<div class="row">
+						<div class="span4"><label for="start_money">Start money</label></div>
+						<div class="span4"><input type="number" name="start_money" id="start_money" /></div>
+					</div>
+					<button type="submit" class="btn btn-primary hoverlay-bottom-btn">Save settings</button>
+					<button class="btn btn-inverse hoverlay-close-btn hoverlay-bottom-btn">Close without saving</button>
+				</form>
+			</div>
 		</div>
-    </div>
-    <script src="js/suprts.js"></script>
-</body>
+		<script src="js/suprts.js"></script>
+	</body>
 </html>
