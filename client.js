@@ -48,6 +48,8 @@ var Client = IgeClass.extend(
 						ige.network.define('characterMove', self._onCharacterMove);
 						ige.network.define('mapSection', self._onMapSection);
 						
+						ige.network.define('neuterConquest', self._onNeuterConquest);
+						
 						ige.network.define('adminlink', self._onAdminLink);
 						
 						

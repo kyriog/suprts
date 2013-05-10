@@ -44,9 +44,10 @@ var Server = IgeClass.extend({
 						
 						ige.network.on('disconnect', self._onPlayerDisconnect);
 						
-						
 						ige.network.define('onRightClick', self._onRightClick);
 						ige.network.define('onLeftClick', self._onLeftClick);
+						
+						ige.network.define('neuterConquest');
 						
 						// Add the network stream component
 						ige.network.addComponent(IgeStreamComponent)

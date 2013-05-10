@@ -49,7 +49,7 @@ var AttackAction =
 			
 			if(tile.owned == false)
 			{
-				AttackAction._AttackNeuterTile(x,y,tile,chunk,clientId);
+				AttackAction._AttackNeuterTile(xTitle,yTitle,tile,chunk,clientId);
 			}
 			else
 			{
@@ -60,14 +60,20 @@ var AttackAction =
 	
 	_AttackNeuterTile: function(x,y,tile,chunk,clientId)
 	{
-		//TODO: Tile is conquested, need to blink in client view
-		setTimeout(function() 
-		{
-			tile.owned = true;
-			tile.owner = ige.server.clients[clientId];
-			ige.server.world.UpdateChunk(chunk);
-			ige.network.send('mapSection', chunk);
-		}, 5000);
+		// Updating tile on server
+		tile.owned = true;
+		tile.owner = ige.server.clients[clientId];
+		ige.server.world.UpdateChunk(chunk);
+		
+		// Sending update to clients
+		var data = {
+			xChunk: chunk.xChunk,
+			yChunk: chunk.yChunk,
+			xTile: x,
+			yTile: y,
+			owner: tile.owner,
+		}
+		ige.network.send('neuterConquest', data);
 	},
 	
 	_AttackPlayerTile: function(x,y,tile,chunk,clientId)

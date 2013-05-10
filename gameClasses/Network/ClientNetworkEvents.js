@@ -151,6 +151,37 @@ var ClientNetworkEvents =
 	{
 	
 	},
+	
+	_onNeuterConquest: function(data, clientId)
+	{
+		if(ige.client.chunksCache[data.xChunk+' '+data.yChunk])
+		{
+			var xTile = data.xChunk + data.xTile,
+				yTile = data.yChunk + data.yTile;
+			for(i=0;i<3;i++)
+			{
+				setTimeout(function() {
+					ige.client.TextureMap.paintTile(xTile, yTile, 0, 0);
+					ige.client.TextureMap.cacheForceFrame();
+				}, i*1000);
+				
+				setTimeout(function()
+				{
+					ige.client.TextureMap.paintTile(xTile, yTile, 0, 4);
+					ige.client.TextureMap.cacheForceFrame();
+				}, i*1000+500);
+			}
+			
+			if(data.owner != ige.client.playerId)
+			{
+				setTimeout(function()
+				{
+					ige.client.TextureMap.paintTile(xTile, yTile, 0, 0);
+					ige.client.TextureMap.cacheForceFrame();
+				}, 3000);
+			}
+		}
+	},
 };
 
 if (typeof(module) !== 'undefined' && typeof(module.exports) !== 'undefined') { module.exports = ClientNetworkEvents; }
