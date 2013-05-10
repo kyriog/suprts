@@ -2,6 +2,7 @@ var config = {
 	include: [
 		{name: 'ServerNetworkEvents', path: './gameClasses/Network/ServerNetworkEvents'},
 		{name: 'Player', path: './gameClasses/Entities/Player'},
+		{name: 'Plant', path: './gameClasses/Entities/Plant'},
 		{name: 'World', path: './gameClasses/World/World'},
 		{name: 'Character', path: './gameClasses/Entities/Character'},
 		{name: 'Chunk', path: './gameClasses/World/Chunk'},
