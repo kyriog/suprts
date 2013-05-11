@@ -6,44 +6,94 @@ var Plant = IgeEntity.extend(
 	{
 		var self = this;
 		IgeEntity.prototype.init.call(this);
-		self.counter = 1000;
-		
+		self.counter = 0;
 		self.size3d(40, 40, 40);
+		
+		this.percentRate = 1;
+		this.tile;
+		this.plantType;
+	
+	},
+	
+	setType: function(seed)
+	{
 		if(!ige.isServer) 
 		{
-			// Load the character texture file
-			this.tomato0 = new IgeTexture('./assets/tomato-0.png');
-			this.tomato1 = new IgeTexture('./assets/tomato-1.png');
-			this.tomato2 = new IgeTexture('./assets/tomato-2.png');
-			this.tomato3 = new IgeTexture('./assets/tomato-3.png');
-
+			this.plantType = ige.client.plants.plants[1];
+		}
+		else
+		{
+			this.plantType = ige.server.plants.plants[1];
+		}
+		
+		if(!ige.isServer) 
+		{
+			this.tex1 = new IgeTexture( this.plantType.texturePath + '1.png');
+			this.tex2 = new IgeTexture( this.plantType.texturePath + '2.png');
+			this.tex3 = new IgeTexture( this.plantType.texturePath + '3.png');
+			this.tex4 = new IgeTexture( this.plantType.texturePath + '4.png');
+			this.tex5 = new Igetexture( this.plantType.texturePath + '5.png');
 			// Wait for the texture to load
-			this.tomato0.on('loaded', function () { self.texture(self.tomato0); }, false, true);
+			this.tex1.on('loaded', function () { self.texture(self.tex1); }, false, true);
 		}
 	},
 	
-	tick: function (ctx) 
+	decayTile: function(tile)
 	{
-		
+		this.tile.Fertility--;
+		this.tile.Humidity--;
+	},
+	
+	tick: function (ctx) 
+	{		
 		this.depth(this._translate.y);
+		this.counter++;
 		
-		this.counter--;
-		
+		if(this.percentRate < 100 ) // Growing Time
+		{
+			if( this.counter == this.plantType.maturationRate)
+			{
+				
+				if(	this.tile.Fertility > this.plantType.minFertility && 
+					this.tile.Humidity  > this.plantType.minHumidity )
+				{
+					this.percentRate++;
+				}
+				else // Plant will not grows if not min rate in Humidity/Fertility
+				{
+					this.percentRate--;
+				}
+				
+				this.counter = 0;
+				this.decayTile(this.tile);
+				
+				// TODO: Save
+			}
+		}
+		else // Decay Time
+		{
+			
+				//TODO: delete
+		}
+
+		// Update Graphic on clients
 		if(!ige.isServer) 
 		{
-			if(this.counter == 750)
+			if(this.percentRate == 25)
 			{
-				this.texture(this.tomato1);
+				this.texture(this.tex2);
 			}
-			
-			if(this.counter == 500)
+			else if(this.percentRate == 50)
 			{
-				this.texture(this.tomato2);
+				this.texture(this.tex3);
 			}
-			
-			if(this.counter == 250)
+			else if(this.percentRate == 75)
 			{
-				this.texture(this.tomato3);
+				this.texture(this.tex4);
+			}
+			else if(this.percentRate == 100)
+			{
+				this.texture(this.tex5);
 			}
 		}
 		

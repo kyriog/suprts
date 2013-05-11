@@ -10,6 +10,7 @@ var Server = IgeClass.extend({
 		this.clients = {};
 		this.characters = {};
 		this.world = new World();
+		self.plants = new Plants();
 		
 		this.implement(ServerNetworkEvents);
 		
@@ -89,6 +90,7 @@ var Server = IgeClass.extend({
 						self.TitleMap.mount(self.objectScene);
 						
 						self.world = new World();
+						
 					}
 				});
 			});

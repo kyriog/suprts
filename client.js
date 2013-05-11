@@ -110,6 +110,7 @@ var Client = IgeClass.extend(
 						self.TextureMap.isometricMounts(true);
 						self.TextureMap.mount(self.mainScene);
 						
+						self.plants = new Plants();
 						
 						var DirtTexIndex = self.TextureMap.addTexture(self.gameTexture.dirtSheet);
 						var GrassTexIndex = self.TextureMap.addTexture(self.gameTexture.grassSheet);
