@@ -77,7 +77,6 @@ var World = IgeClass.extend(
 		});
 	},
 	
-	// TODO: Implements persistence
 	UpdateChunk: function(chunk)
 	{
 		var query = 'UPDATE chunks SET data = \''+JSON.stringify(chunk)+'\' WHERE x = "'+chunk.xChunk+'" AND y = "'+chunk.yChunk+'"';

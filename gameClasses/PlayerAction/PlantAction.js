@@ -1,14 +1,12 @@
 //TODO: implémenter la persistence ( save, update reload des plants au start du serveur).
-//TODO: Trouver une méthode pour gérer plusieurs types de plantes de facon simple
-//TODO: Faire évoluer la Fertilité/Water de la tile ou est planté la graine
-//TODO: Check de distance classique pour qu on puisse uniquement faire des actions a une case de distance
+//DONE: Trouver une méthode pour gérer plusieurs types de plantes de facon simple
+//DONE, NEED TO WORK ON VALUE: Faire évoluer la Fertilité/Water de la tile ou est planté la graine
+//DONE: Check de distance classique pour qu on puisse uniquement faire des actions a une case de distance
 
 var PlantAction = 
 {
 	onPlantAction: function(x,y,choice,clientID)
 	{
-		console.log('onPlantAction: function('+x*40+','+y*40+','+choice+','+clientID+')');
-		
 		var xChunk = x - x%10;
 		var yChunk = y - y%10;
 			
@@ -51,32 +49,76 @@ var PlantAction =
 		
 		if( Distance <= 2 )
 		{
+			console.log('onPlantAction: function('+x*40+','+y*40+','+choice+','+clientID+')');
 			var chunk = ige.server.world.chunksCache[xChunk + ' ' + yChunk];
 			var tile = chunk.getTitle(xTitle,yTitle);
-			var p = new Plant();
-			p.tile = tile;
-			p.setType(choice);
-			
-			p.streamMode(1).mount(ige.server.TitleMap);
-			var point = new IgePoint(x*40 - 8, y*40 - 9, 0);
-			p.translateToPoint(point.thisToIso());
-		
+			this.CheckPlant(x,y, tile, chunk, choice,this, this.AddNewPlant);
 		}
+	},
+	
+	
+	AddNewPlant: function(x,y,tile,chunk,choice,ctx)
+	{
+		var p = new Plant();
+		p.seed = choice;
+		p.tile = tile;
+		p.chunk = chunk;
+		p.updateCallback = ctx.UpdatePlant;
+			
+		p.x = x;
+		p.y = y;
+			
+		ctx.SavePlant(p);
+		p.streamMode(1).mount(ige.server.TitleMap);
+		var point = new IgePoint(x*40 - 8, y*40 - 9, 0);
+		p.translateToPoint(point.thisToIso());
+	},
+	
+	CheckPlant: function(x,y,tile,chunk,choice,ctx,callback)
+	{
+		var query = 'SELECT id FROM plants WHERE x = '+x+' AND y = '+y+'';
+		ige.mysql.query(query, function(err, rows) 
+		{
+			if(err)
+			{
+				console.log(err);
+			}
+			
+			if(rows.length == 0)
+			{
+				callback(x,y,tile,chunk,choice,ctx);
+			}
+			
+		});
 	},
 	
 	SavePlant: function(plant)
 	{
-	
+		var query = 'INSERT INTO plants (x,y,type,percent) VALUES ("'+plant.x+'", "'+plant.y+'", \''+plant.seed+'\', '+plant.percentRate+');';
+		ige.mysql.query(query, function(err, rows) 
+		{
+			if(err)
+			{
+				console.log(err);
+			}
+		});
 	},
 	
 	UpdatePlant: function(plant)
 	{
-	
+		var query = 'UPDATE plants SET percent = '+plant.percentRate+' WHERE x = "'+plant.x+'" AND y = "'+plant.y+'"';
+		ige.mysql.query(query, function(err, rows) 
+		{
+			if(err)
+			{
+				console.log(err);
+			}
+		});
 	},
 	
 	LoadPlants: function()
 	{
-	
+		//TODO: Load plants at server starts.
 	}
 };
 
