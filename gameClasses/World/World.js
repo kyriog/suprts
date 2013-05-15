@@ -8,6 +8,52 @@ var World = IgeClass.extend(
 		this.Generator = new WorldGenerator(1);
 		this.chunksCache = new Object();
 	},
+		
+	getChunkRef: function(x,y)
+	{
+		var xChunk = x - x%10;
+		var yChunk = y - y%10;
+			
+		if(x < 0)
+		{
+			xChunk = ( Math.ceil(x / 10) * 10);
+			if(x % 10 != 0)
+			{
+				xChunk = xChunk - 10;
+			}
+		}
+			
+		if(y < 0)
+		{
+			yChunk = ( Math.ceil(y / 10) * 10);
+			if(y % 10 != 0)
+			{
+				yChunk = yChunk - 10;
+			}
+		}
+			
+		return ige.server.world.chunksCache[xChunk + ' ' + yChunk];
+	
+	},
+	
+	getTileRef: function(x,y)
+	{
+		var chunk = this.getChunkRef(x,y);
+		var xTitle = chunk.xChunk - x;
+		var yTitle = chunk.yChunk - y;
+			
+		if(xTitle < 0)
+		{
+			xTitle = xTitle * -1;
+		}
+			
+		if(yTitle < 0)
+		{
+			yTitle = yTitle * -1;
+		}
+		
+		return chunk.getTitle(xTitle,yTitle);
+	},
 	
 	getChunk: function(x,y,callback)
 	{
