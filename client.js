@@ -45,14 +45,13 @@ var Client = IgeClass.extend(
 						ige.network.define('playerLogin', self._onPlayerLogin);
 						ige.network.define('playerLoginError', self._onPlayerLoginError);
 						ige.network.define('playerEntity', self._onPlayerEntity);
+						ige.network.define('playerUpdate', self._onPlayerUpdate);
 						ige.network.define('characterMove', self._onCharacterMove);
 						ige.network.define('mapSection', self._onMapSection);
 						
 						ige.network.define('neuterConquest', self._onNeuterConquest);
 						
 						ige.network.define('adminlink', self._onAdminLink);
-						
-						
 						
 						
 						// Setup the network stream handler

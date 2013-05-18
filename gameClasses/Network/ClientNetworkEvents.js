@@ -84,6 +84,12 @@ var ClientNetworkEvents =
 		}
 	},
 	
+	_onPlayerUpdate: function (data)
+	{
+		$(".player-level").text(data.level);
+		$(".player-gold").text(data.gold);
+	},
+	
 	
 	_onCharacterMove: function (data)
 	{
