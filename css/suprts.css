@@ -57,7 +57,7 @@ h1 {
 	position: fixed;
 	display: none;
 	height: 50px;
-	width: 140px;
+	min-width: 100px;
 	background-color: #FFF;
 	border: 1px solid #000;
 	border-bottom-right-radius: 10px;
