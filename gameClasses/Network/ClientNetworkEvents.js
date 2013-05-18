@@ -11,6 +11,7 @@ var ClientNetworkEvents =
 		$("#hoverlay").fadeOut("1000");
 		$("#login-content").slideUp("1000");
 		$("#action-bar").fadeIn("500");
+		$("#player-section").fadeIn("500");
 		$("#top-buttons").fadeIn("500");
 		if(data.is_admin) 
 		{

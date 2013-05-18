@@ -81,6 +81,7 @@ $("#logout-link").click(function()
 	$("#hoverlay").fadeIn("1000");
 	$("#login-content").slideDown("1000");
 	$("#admin-link").fadeOut("1000");
+	$("#player-section").fadeOut("1000");
 	$("#top-buttons").fadeOut("1000");
 	$("#action-bar").fadeOut("500", function() 
 	{
