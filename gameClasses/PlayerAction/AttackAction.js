@@ -74,6 +74,7 @@ var AttackAction =
 			owner: tile.owner,
 		}
 		ige.network.send('neuterConquest', data);
+		PlayerStats.addLevel(tile.owner);
 	},
 	
 	_AttackPlayerTile: function(x,y,tile,chunk,clientId)

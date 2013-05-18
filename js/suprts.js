@@ -81,6 +81,12 @@ $("#logout-link").click(function()
 	$("#hoverlay").fadeIn("1000");
 	$("#login-content").slideDown("1000");
 	$("#admin-link").fadeOut("1000");
+	$("#player-section").fadeOut("1000", function() {
+		// Resetting player section values to null to prevent privacy issues
+		$(".player-name").text("");
+		$(".player-gold").text("");
+		$(".player-level").text("");
+	});
 	$("#top-buttons").fadeOut("1000");
 	$("#action-bar").fadeOut("500", function() 
 	{

@@ -61,13 +61,23 @@ var ServerNetworkEvents =
 						money = rows[0].config_value / 10;
 						break; 
 				}
-				var query = 'INSERT INTO users (email, password, level, money) VALUES ("'+data.email+'", SHA1("'+data.password+'"), "'+data.difficulty+'", "'+money+'");';
+				var query = 'INSERT INTO users (email, password, difficulty, money) VALUES ("'+data.email+'", SHA1("'+data.password+'"), "'+data.difficulty+'", "'+money+'");';
 				ige.mysql.query(query, function(err, rows) 
 				{
 					if(!err) 
 					{
 						ige.server.clients[clientId] = rows.insertId;
-						clientData = { is_admin: 0 };
+						PlayerStats.getPlayer(rows.insertId, function(player) {
+							player.clientId = clientId;
+						});
+						
+						clientData = {
+							is_admin: 0,
+							// We may add a player name, it could be prettier than an ugly email address
+							name: data.email,
+							gold: money,
+							level: 0,
+						};
 						ige.network.send('playerLogin', clientData, clientId);
 						// We should move these 3 lines to another method to avoid duplicate code
 						ige.server.characters[clientId] = new Player().id(clientId).streamMode(1).mount(ige.server.TitleMap);
@@ -92,7 +102,7 @@ var ServerNetworkEvents =
 	
 	_onPlayerLogin: function(data, clientId) 
 	{
-		var query = 'SELECT id, is_administrator FROM users WHERE email = "'+data.email+'" AND password = SHA1("'+data.password+'") LIMIT 1;';
+		var query = 'SELECT id, email, is_administrator FROM users WHERE email = "'+data.email+'" AND password = SHA1("'+data.password+'") LIMIT 1;';
 		ige.mysql.query(query, function(err, rows) 
 		{
 			if(err) 
@@ -107,8 +117,19 @@ var ServerNetworkEvents =
 			else 
 			{
 				ige.server.clients[clientId] = rows[0].id;
-				clientData = { is_admin: rows[0].is_administrator };
-				ige.network.send('playerLogin', clientData, clientId);
+				PlayerStats.getPlayer(rows[0].id, function(player) {
+					player.clientId = clientId;
+					
+					var clientData = {
+						is_admin: rows[0].is_administrator,
+						// We may add a player name, it could be prettier than an ugly email address
+						name: rows[0].email,
+						gold: player.gold,
+						level: player.level,
+					};
+					ige.network.send('playerLogin', clientData, clientId);
+				});
+				
 				// We should move these 3 lines to another method to avoid duplicate code
 				ige.server.characters[clientId] = new Player().id(clientId).streamMode(1).mount(ige.server.TitleMap);
 				ige.server.characters[clientId].translateTo(0,0,0);
@@ -130,6 +151,7 @@ var ServerNetworkEvents =
 	
 	_onPlayerDisconnect: function(clientId) 
 	{
+		ige.server.players[ige.server.clients[clientId]].clientId = false;
 		delete(ige.server.clients[clientId]);
 		
 		if (ige.server.characters[clientId]) 

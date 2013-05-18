@@ -8,6 +8,7 @@ var Server = IgeClass.extend({
 		
 		this.users = {};
 		this.clients = {};
+		this.players = {};
 		this.characters = {};
 		this.world = new World();
 		self.plants = new Plants();
@@ -35,6 +36,7 @@ var Server = IgeClass.extend({
 						ige.network.define('playerLoginError');
 						ige.network.define('playerLogout', self._onPlayerLogout);
 						ige.network.define('playerEntity');
+						ige.network.define('playerUpdate');
 						
 						ige.network.define('characterMove');
 						ige.network.define('mapSection', self._onMapSection);
