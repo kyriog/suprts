@@ -61,7 +61,7 @@ var ServerNetworkEvents =
 						money = rows[0].config_value / 10;
 						break; 
 				}
-				var query = 'INSERT INTO users (email, password, level, money) VALUES ("'+data.email+'", SHA1("'+data.password+'"), "'+data.difficulty+'", "'+money+'");';
+				var query = 'INSERT INTO users (email, password, difficulty, money) VALUES ("'+data.email+'", SHA1("'+data.password+'"), "'+data.difficulty+'", "'+money+'");';
 				ige.mysql.query(query, function(err, rows) 
 				{
 					if(!err) 
