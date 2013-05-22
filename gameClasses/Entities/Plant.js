@@ -21,10 +21,10 @@ var Plant = IgeEntity.extend(
 		
 		this.tile = 0;
 		this.chunk = 0;
-		this.x;
-		this.y;
+		this.x = 0;
+		this.y = 0;
 		
-		this.updateCallback;
+		this.updateCallback = 0;
 	},
 	
 	streamSectionData: function (sectionId, data) 
