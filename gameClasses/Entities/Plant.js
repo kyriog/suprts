@@ -94,6 +94,7 @@ var Plant = IgeEntity.extend(
 		this.tex3 = new IgeTexture( this.plantType.texturePath + '3.png');
 		this.tex4 = new IgeTexture( this.plantType.texturePath + '4.png');
 		this.tex5 = new IgeTexture( this.plantType.texturePath + '5.png');
+		
 	},
 
 	

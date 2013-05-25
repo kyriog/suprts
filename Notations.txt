@@ -1,0 +1,105 @@
+Notation:
+
+Documentation(2 points) 
+• Spelling and grammar (0.5 points)
+• Relevancy (0.5 points)
+• Technical documentation (1 point)
+
+User and accounts(6points) 6 / 6
+DONE • Users can register(2 point)
+DONE • Users can choose a difficulty level(1point)
+DONE • Administrators can edit the game settings (3 points)
+
+Game board (15 points) 15 / 15
+DONE • The game board  a tiled square in iso-3D (3 points)
+DONE • The iso-3D farmer character can  the board (4points)
+DONE • The board scrolls as the player walks (3 points)
+DONE • The farmer has to near tiles to do actions on them (2 points) 
+DONE • The engine generates fertility by bands (3 points)
+
+Game startup(6 points) 4 / 6
+• The player starts within  fixed radius from others (2 points)
+DONE • The world grows as needed (4 points)
+
+Territory (16 points) 11.5 / 16
+DONE • Farmer can attack tiles to make them his (2 points)
+DONE • The farmer can attack up to X tiles at time, X depending on his level (3 points)
+HALF DONE • Attacking already owned tiles touch off a fight (3 points)
+DONE • Each tile has humidity and fertility (2 points)
+HALF DONE • Humidity can be raised by rain(natural) or watering(farmer)(3 points)
+HALF DONE• Fertility can be raised by fertilizer(farmer) or no growing on it(natural)(3 points)
+
+Levels (4 points) 4 / 4
+DONE • The farmer level depends on the number of owned tiles.(2 points)
+DONE • Level fluctuates whenever the number of owned tiles changes (2 points)
+
+Buildings (15 points)
+• The farmer can build buildings on his tiles (3 points)
+• Silo and barn store goods (4 points)
+• Storage amounts (tiles of crop) can be defined by admin per building (2 points)
+• Cold storage store goods indefinitely(3 points)
+• Cold storage cost power when non-empty(3 points)
+
+Growing (42 points) 38 / 42
+DONE • The farmer can grow various crops on his tiles (7 points)
+HAFL DONE • Each crop has maturation time, decay time, productivity, storability and seed price (4 points)
+DONE • Each crop tile has individual health depending on water and fertility (4 points)
+DONE • Each crop tile is represented by a different sprite depending on health (5 points)
+DONE • Each crop tile grows over the time (5 points)
+DONE • Each crop tile is represented by a different sprite depending on maturity (5 points)
+HAFL DONE • The crop tile consumes the tile humidity and fertility while growing (4 points)
+DONE • The farmer can water (and watering increase the tile humidity) a tile (4 points)
+DONE • The farmer can fertilize (and fertilizing increase the tile fertility) a tile(4 points)
+
+Harvesting (26 points) 14 / 28
+DONE • A mature-enough crop tile can be harvested (6 points)
+DONE • The farmer can sell harvested crop immediately (8 points)
+TODO • The farmer can store in storage buildings if there is enough room left (6 points) 
+TODO • The price of the various crops fluctuate over the time (6 points)
+
+Fights (49 points) 3 / 49
+DONE • Attacked tiles blink (3 points)
+• Farmers can have different weapons (3 points)
+• Different weapons have power, hit ratio, hits per second, price (3 points)
+• Farmers can use their weapons during fights (5 points)
+• There is an animation for each weapon (5 points)
+• Farmers can defend their land (3 points)
+• Farmers have health points (2 points)
+• Farmer health points depends on their level (3 points)
+• The first to drain the other's health wins the fight (1 points) 
+• The looser have to rest to regenerate life (3 points)
+• Regeneration speed depends on the level (2 points)
+• A "resting" farmer cannot fight or harvest but he can water or fertilize (3 points)
+• The winner takes the land. (3 points)
+• The winner cannot attack the same farmer again during a grace time (3 points)
+• The grace time depends on the attacked level (higher level, lower time) (3 points)
+• If the attacked player wins he can counter-attack with no grace time (4 points)
+
+Alliances (21 points)
+• Players can create alliances (2 points)
+• Players can invite/join/quit alliances (3 points)
+• Allied players cannot attack each other (2 points)
+• Allied players see other plays tiles as neutral but not attackable tiles (3 points)
+• Allied players level depends on the alliance-controlled tiles number (2 points)
+• Alliance controlled-tiles blink for every allied player when attacked (3 points)
+• Allied players can defend the alliance territory as their own (3 points)
+• Allied can take care of each other's crops (3 points)
+
+Natural events (12 points)
+• The engine makes natural events to occur (3 points)
+• Rain (2 points)
+• Tornadoes (moves) (3 points)
+• Meteor  (2 points)
+• Grasshoppers (2 points)
+
+Offline behavior (15 points) 12/16
+DONE • The world constantly runs (growing, withering, …) (6 points)
+• The farmer will automatically defend himself with his best weapon (3 points)
+DONE • Other players see the farm "living" (crops growing, withering, …) (6 points) 
+
+Bonus (10 points)
+
+
+
+
+

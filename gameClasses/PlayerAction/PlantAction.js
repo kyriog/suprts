@@ -17,7 +17,11 @@ var PlantAction =
 			console.log('onPlantAction: function('+x*40+','+y*40+','+choice+','+clientID+')');
 			var chunk = ige.server.world.getChunkRef(x,y);
 			var tile = ige.server.world.getTileRef(x,y);
-			this.CheckPlant(x,y, tile, chunk, choice,this, this.AddNewPlant);
+			
+			if(ige.server.clients[clientID] == tile.owner) // On verifie qu'on est bien sur une de nos tiles;
+			{
+				this.CheckPlant(x,y, tile, chunk, choice,this, this.AddNewPlant);
+			}
 		}
 	},
 	
@@ -25,6 +29,7 @@ var PlantAction =
 	AddNewPlant: function(x,y,tile,chunk,choice,ctx)
 	{
 		var p = new Plant();
+		p.id('Plant_'+x+'_'+y);
 		p.seed = choice;
 		p.tile = tile;
 		p.chunk = chunk;
@@ -87,7 +92,56 @@ var PlantAction =
 	
 	LoadPlants: function()
 	{
-		//TODO: Load plants at server starts.
+		var ctx = this;
+		var query = 'SELECT * FROM plants WHERE 1';
+		ige.mysql.query(query, function(err, rows) 
+		{
+			if(err)
+			{
+				console.log(err);
+			}
+			
+			for(var i = 0; i < rows.length; i++)
+			{
+				var p = new Plant();
+				p.id('Plant_'+rows[i].x+'_'+rows[i].y);
+				
+				p.percentRate = rows[i].percent;
+				var seed = rows[i].type;
+				var xP = rows[i].x;
+				var yP = rows[i].y;
+				
+				ige.server.world.getChunkRef(xP,yP, function(chunk)
+				{
+					p.chunk = chunk;
+					p.seed = seed;
+					
+					var xTitle = chunk.xChunk - xP;
+					var yTitle = chunk.yChunk - yP;
+						
+					if(xTitle < 0)
+					{
+						xTitle = xTitle * -1;
+					}
+						
+					if(yTitle < 0)
+					{
+						yTitle = yTitle * -1;
+					}
+
+					p.tile = chunk.getTitle(xTitle,yTitle);
+					
+					p.updateCallback = ctx.UpdatePlant;
+						
+					p.x = xP;
+					p.y = yP;
+					
+					p.streamMode(1).mount(ige.server.TitleMap);
+					var point = new IgePoint(p.x*40 - 8, p.y*40 - 9, 0);
+					p.translateToPoint(point.thisToIso());
+				});
+			}
+		});
 	}
 };
 

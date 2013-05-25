@@ -92,7 +92,7 @@ var Server = IgeClass.extend({
 						self.TitleMap.mount(self.objectScene);
 						
 						self.world = new World();
-						
+						PlantAction.LoadPlants();
 					}
 				});
 			});

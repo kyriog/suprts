@@ -45,21 +45,24 @@ var WateringAction =
 		
 		if( Distance <= 2 )
 		{	
-			var chunk = ige.server.world.chunksCache[xChunk + ' ' + yChunk];
-			var tile = chunk.getTitle(xTitle,yTitle);
-			
-			if(tile.Humidity < 91)
+			if(ige.server.clients[clientID] == tile.owner) // On verifie qu'on est bien sur une de nos tiles;
 			{
-				tile.Humidity = tile.Humidity + 10;
+				var chunk = ige.server.world.chunksCache[xChunk + ' ' + yChunk];
+				var tile = chunk.getTitle(xTitle,yTitle);
+				
+				if(tile.Humidity < 91)
+				{
+					tile.Humidity = tile.Humidity + 10;
+				}
+				else
+				{
+					tile.Humidity = 100;
+				}
+				
+				chunk.setTitle(x,y,tile);
+				ige.server.world.UpdateChunk(chunk);
+				ige.network.send('mapSection', chunk);
 			}
-			else
-			{
-				tile.Humidity = 100;
-			}
-			
-			chunk.setTitle(x,y,tile);
-			ige.server.world.UpdateChunk(chunk);
-			ige.network.send('mapSection', chunk);
 		}
 	}
 };

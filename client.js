@@ -14,6 +14,12 @@ var Client = IgeClass.extend(
 		self.gameTexture.dirtSheet = new IgeCellSheet('./assets/textures/tiles/dirtSheet.png', 4, 1);
 		self.gameTexture.grassSheet = new IgeCellSheet('./assets/textures/tiles/grassSheet.png', 4, 1);
 
+		this.tex1 = new IgeTexture( './assets/tomato-1.png');
+		this.tex2 = new IgeTexture( './assets/tomato-2.png');
+		this.tex3 = new IgeTexture( './assets/tomato-3.png');
+		this.tex4 = new IgeTexture( './assets/tomato-4.png');
+		this.tex5 = new IgeTexture( './assets/tomato-5.png');
+		
 		// Enable networking
 		ige.addComponent(IgeNetIoComponent);
 		
