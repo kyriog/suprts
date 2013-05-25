@@ -1,44 +1,44 @@
 Notation:
 
-Documentation(2 points) 
-• Spelling and grammar (0.5 points)
-• Relevancy (0.5 points)
-• Technical documentation (1 point)
+Documentation(6 points) 
+• Spelling and grammar (1 points)
+• Relevancy (1 points)
+• Technical documentation (4 point)
 
-User and accounts(6points) 6 / 6
+User and accounts( 6 points) 6 / 6
 DONE • Users can register(2 point)
 DONE • Users can choose a difficulty level(1point)
 DONE • Administrators can edit the game settings (3 points)
 
-Game board (15 points) 15 / 15
-DONE • The game board  a tiled square in iso-3D (3 points)
-DONE • The iso-3D farmer character can  the board (4points)
-DONE • The board scrolls as the player walks (3 points)
-DONE • The farmer has to near tiles to do actions on them (2 points) 
-DONE • The engine generates fertility by bands (3 points)
+Game board (25 points) 25 / 25
+DONE • The game board  a tiled square in iso-3D (5 points)
+DONE • The iso-3D farmer character can  the board (6 points)
+DONE • The board scrolls as the player walks (5 points)
+DONE • The farmer has to near tiles to do actions on them (4 points) 
+DONE • The engine generates fertility by bands (5 points)
 
 Game startup(6 points) 4 / 6
 • The player starts within  fixed radius from others (2 points)
 DONE • The world grows as needed (4 points)
 
-Territory (16 points) 11.5 / 16
-DONE • Farmer can attack tiles to make them his (2 points)
-DONE • The farmer can attack up to X tiles at time, X depending on his level (3 points)
-HALF DONE • Attacking already owned tiles touch off a fight (3 points)
-DONE • Each tile has humidity and fertility (2 points)
-HALF DONE • Humidity can be raised by rain(natural) or watering(farmer)(3 points)
-HALF DONE• Fertility can be raised by fertilizer(farmer) or no growing on it(natural)(3 points)
+Territory (28 points) 20.5 / 28
+DONE • Farmer can attack tiles to make them his (4 points)
+DONE • The farmer can attack up to X tiles at time, X depending on his level (5 points)
+HALF DONE • Attacking already owned tiles touch off a fight (5 points)
+DONE • Each tile has humidity and fertility (4 points)
+HALF DONE • Humidity can be raised by rain(natural) or watering(farmer)(5 points)
+HALF DONE• Fertility can be raised by fertilizer(farmer) or no growing on it(natural)(5 points)
 
 Levels (4 points) 4 / 4
 DONE • The farmer level depends on the number of owned tiles.(2 points)
 DONE • Level fluctuates whenever the number of owned tiles changes (2 points)
 
-Buildings (15 points)
-• The farmer can build buildings on his tiles (3 points)
-• Silo and barn store goods (4 points)
-• Storage amounts (tiles of crop) can be defined by admin per building (2 points)
-• Cold storage store goods indefinitely(3 points)
-• Cold storage cost power when non-empty(3 points)
+Buildings (30 points)
+• The farmer can build buildings on his tiles (6 points)
+• Silo and barn store goods (7 points)
+• Storage amounts (tiles of crop) can be defined by admin per building (5 points)
+• Cold storage store goods indefinitely(6 points)
+• Cold storage cost power when non-empty(6 points)
 
 Growing (42 points) 38 / 42
 DONE • The farmer can grow various crops on his tiles (7 points)
