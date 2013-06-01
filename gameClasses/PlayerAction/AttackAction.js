@@ -79,9 +79,10 @@ var AttackAction =
 	
 	_AttackPlayerTile: function(x,y,tile,chunk,clientId)
 	{
-		if(tile.owner != ige.server.clients[clientId])
+		var attacker = ige.server.clients[clientId];
+		if(tile.owner != attacker)
 		{
-			tile.attackedBy = ige.server.clients[clientId];
+			tile.attackedBy = attacker;
 			tile.autocapture = true;
 			var data = {
 				xChunk: chunk.xChunk,
@@ -91,6 +92,11 @@ var AttackAction =
 			}
 			
 			ige.network.send('tileBlinking', data, clientId);
+			
+			PlayerStats.getPlayer(attacker, function(player) {
+				console.log(player);
+				player.capturing++;
+			});
 			
 			PlayerStats.getPlayer(tile.owner, function(player) {
 				if(player.clientId)
@@ -112,6 +118,10 @@ var AttackAction =
 	
 					data.owner = tile.owner;
 					ige.network.send('tileConquest', data);
+					
+					PlayerStats.getPlayer(tile.owner, function(player) {
+						player.capturing--;
+					});
 				}
 			}, 20000);
 		}

@@ -32,11 +32,17 @@ var ServerNetworkEvents =
 	_onLeftClick: function(data, clientId)
 	{
 		console.log('_onLeftClick: function('+data+', '+clientId+')');
-		if(ige.server.characters[clientId]) 
-		{		
-			console.log('Walking ' + clientId + ' to (' + data.x + ',' + data.y + ')');
-			ige.network.send('characterMove', { id : ige.server.characters[clientId].id() ,x : data.x ,y : data.y });
-			ige.server.characters[clientId].walkTo(data.x, data.y);
+		var character = ige.server.characters[clientId];
+		if(character)
+		{
+			PlayerStats.getPlayer(ige.server.clients[clientId], function(player) {
+				if(player.capturing == 0)
+				{
+					console.log('Walking ' + clientId + ' to (' + data.x + ',' + data.y + ')');
+					ige.network.send('characterMove', { id : character.id() ,x : data.x ,y : data.y });
+					character.walkTo(data.x, data.y);
+				}
+			});
 		}
 	},
 	

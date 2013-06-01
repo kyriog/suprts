@@ -18,7 +18,8 @@ var PlayerStats =
 						hp: rows[0].hp,
 						maxHp: function() {
 							return this.level * 10 + 10;
-						}
+						},
+						capturing: 0,
 					}
 					callback(ige.server.players[id]);
 				}
