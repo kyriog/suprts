@@ -79,39 +79,42 @@ var AttackAction =
 	
 	_AttackPlayerTile: function(x,y,tile,chunk,clientId)
 	{
-		tile.attackedBy = ige.server.clients[clientId];
-		tile.autocapture = true;
-		var data = {
-			xChunk: chunk.xChunk,
-			yChunk: chunk.yChunk,
-			xTile: x,
-			yTile: y,
-		}
-		
-		ige.network.send('tileBlinking', data, clientId);
-		
-		PlayerStats.getPlayer(tile.owner, function(player) {
-			if(player.clientId)
-			{
-				ige.network.send('tileAttack', data, player.clientId);
-			}
-		});
-		
-		setTimeout(function() 
+		if(tile.owner != ige.server.clients[clientId])
 		{
-			if(tile.autocapture)
-			{
-				PlayerStats.subLevel(tile.owner);
-				PlayerStats.addLevel(tile.attackedBy);
-
-				tile.owner = tile.attackedBy;
-				tile.attackedBy = 0;
-				tile.autocapture = false;
-
-				data.owner = tile.owner;
-				ige.network.send('tileConquest', data);
+			tile.attackedBy = ige.server.clients[clientId];
+			tile.autocapture = true;
+			var data = {
+				xChunk: chunk.xChunk,
+				yChunk: chunk.yChunk,
+				xTile: x,
+				yTile: y,
 			}
-		}, 20000);
+			
+			ige.network.send('tileBlinking', data, clientId);
+			
+			PlayerStats.getPlayer(tile.owner, function(player) {
+				if(player.clientId)
+				{
+					ige.network.send('tileAttack', data, player.clientId);
+				}
+			});
+			
+			setTimeout(function() 
+			{
+				if(tile.autocapture)
+				{
+					PlayerStats.subLevel(tile.owner);
+					PlayerStats.addLevel(tile.attackedBy);
+	
+					tile.owner = tile.attackedBy;
+					tile.attackedBy = 0;
+					tile.autocapture = false;
+	
+					data.owner = tile.owner;
+					ige.network.send('tileConquest', data);
+				}
+			}, 20000);
+		}
 	},
 };
 
