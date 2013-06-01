@@ -4,7 +4,7 @@ var PlayerStats =
 	{
 		if(!ige.server.players[id])
 		{
-			var query = 'SELECT email, difficulty, money, level FROM users WHERE id="'+id+'" LIMIT 1;';
+			var query = 'SELECT email, difficulty, money, level, hp FROM users WHERE id="'+id+'" LIMIT 1;';
 			ige.mysql.query(query, function(err, rows) {
 				if(!err && rows[0])
 				{
@@ -15,6 +15,10 @@ var PlayerStats =
 						difficulty: rows[0].difficulty,
 						gold: rows[0].money,
 						level: rows[0].level,
+						hp: rows[0].hp,
+						maxHp: function() {
+							return this.level * 10 + 10;
+						}
 					}
 					callback(ige.server.players[id]);
 				}
@@ -95,6 +99,31 @@ var PlayerStats =
 			player.gold = qty;
 			PlayerStats._updatePlayer(player);
 		});
+	},
+	
+	regenLife: function()
+	{
+		for(id in ige.server.players)
+		{
+			var player = ige.server.players[id];
+			if(player.hp < player.maxHp())
+			{
+				player.hp += Math.round(0.5 * player.level + 1);
+				if(player.hp > player.maxHp())
+				{
+					player.hp = player.maxHp();
+				}
+				
+				if(player.clientId)
+				{
+					var data = {currentHp: player.hp, maxHp: player.maxHp()};
+					ige.network.send("updateLife", data, player.clientId);
+				}
+				
+				var query = 'UPDATE users SET hp = "'+player.hp+'" WHERE id = "'+id+'" LIMIT 1;';
+				ige.mysql.query(query);
+			}
+		}
 	},
 };
 

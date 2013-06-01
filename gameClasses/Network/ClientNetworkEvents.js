@@ -20,17 +20,7 @@ var ClientNetworkEvents =
 		var lifePercentage = data.currentHp * 100 / data.maxHp;
 		$("#health-bar .graphic").css("width", lifePercentage+"%");
 		$("#health-bar").fadeIn("500");
-		
-		if(data.currentHp == data.maxHp)
-		{
-			// Hiding health bar if it's full
-			setTimeout(function() {
-				if(data.currentHp == data.maxHp)
-				{
-					$("#health-bar").fadeOut("500");
-				}
-			}, 5000);
-		}
+		autoHideHealth();
 		
 		$("#player-section").fadeIn("500");
 		$("#top-buttons").fadeIn("500");
@@ -227,6 +217,16 @@ var ClientNetworkEvents =
 			}
 			ige.client.TextureMap.cacheForceFrame();
 		}
+	},
+	
+	_onUpdateLife: function(data)
+	{
+		$(".current-life").text(data.currentHp);
+		$(".max-life").text(data.maxHp);
+		var lifePercent = data.currentHp * 100 / data.maxHp;
+		$("#health-bar .graphic").css("width", lifePercent+"%");
+		$("#health-bar").fadeIn("500");
+		autoHideHealth();
 	},
 };
 

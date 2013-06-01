@@ -61,6 +61,8 @@ var Client = IgeClass.extend(
 						ige.network.define('tileAttack', self._onTileAttack);
 						ige.network.define('tileConquest', self._onTileConquest);
 						
+						ige.network.define('updateLife', self._onUpdateLife);
+						
 						ige.network.define('adminlink', self._onAdminLink);
 						
 						

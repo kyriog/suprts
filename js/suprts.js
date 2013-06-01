@@ -158,3 +158,15 @@ $(".hoverlay-close-btn").click(function()
 	$("#admin-content").slideUp("1000");
 	$("#hoverlay").fadeOut("1000");
 });
+
+function autoHideHealth() {
+	if($(".current-life").text() == $(".max-life").text())
+	{
+		setTimeout(function() {
+			if($(".current-life").text() == $(".max-life").text())
+			{
+				$("#health-bar").fadeOut("500");
+			}
+		}, 5000);
+	}
+}

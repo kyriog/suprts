@@ -54,6 +54,8 @@ var Server = IgeClass.extend({
 						ige.network.define('tileAttack');
 						ige.network.define('tileConquest');
 						
+						ige.network.define('updateLife');
+						
 						// Add the network stream component
 						ige.network.addComponent(IgeStreamComponent)
 							.stream.sendInterval(30) // Send a stream update once every 30 milliseconds
@@ -95,6 +97,9 @@ var Server = IgeClass.extend({
 						
 						self.world = new World();
 						PlantAction.LoadPlants();
+						
+						// Starting life regeneration of players
+						setInterval(PlayerStats.regenLife, 3000);
 					}
 				});
 			});
