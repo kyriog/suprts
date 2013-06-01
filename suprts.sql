@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Sam 18 Mai 2013 à 17:50
+-- Généré le: Sam 01 Juin 2013 à 19:16
 -- Version du serveur: 5.5.27
 -- Version de PHP: 5.4.7
 
@@ -52,6 +52,21 @@ CREATE TABLE IF NOT EXISTS `config` (
 
 INSERT INTO `config` (`config_name`, `config_value`) VALUES
 ('start_money', '1000');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `plants`
+--
+
+CREATE TABLE IF NOT EXISTS `plants` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `x` int(11) NOT NULL,
+  `y` int(11) NOT NULL,
+  `type` varchar(2555) NOT NULL,
+  `percent` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
