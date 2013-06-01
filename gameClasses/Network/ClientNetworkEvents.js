@@ -162,34 +162,52 @@ var ClientNetworkEvents =
 	
 	},
 	
-	_onNeuterConquest: function(data, clientId)
+	_onTileBlinking: function(data)
 	{
 		if(ige.client.chunksCache[data.xChunk+' '+data.yChunk])
 		{
 			var xTile = data.xChunk + data.xTile,
 				yTile = data.yChunk + data.yTile;
-			for(i=0;i<3;i++)
-			{
-				setTimeout(function() {
-					ige.client.TextureMap.paintTile(xTile, yTile, 0, 0);
-					ige.client.TextureMap.cacheForceFrame();
-				}, i*1000);
-				
-				setTimeout(function()
-				{
-					ige.client.TextureMap.paintTile(xTile, yTile, 0, 4);
-					ige.client.TextureMap.cacheForceFrame();
-				}, i*1000+500);
-			}
+			ige.client.blinkingTiles[xTile+' '+yTile] = true;
+			ige.client.doTileBlinking(xTile, yTile);
+		}
+	},
+	
+	_onTileAttack: function(data)
+	{
+		$.gritter.add({
+			title: 'Your territory is under attack!',
+			text: 'Our probes detected that one of your tiles is under attack, but they are unable to locate where! Inspect your world.',
+			sticky: false,
+			time: 5000,
+		});
+		if(ige.client.chunksCache[data.xChunk+' '+data.yChunk])
+		{
+			var xTile = data.xChunk + data.xTile,
+				yTile = data.yChunk + data.yTile;
+			ige.client.blinkingTiles[xTile+' '+yTile] = true;
+			ige.client.doTileBlinking(xTile, yTile);
+		}
+	},
+	
+	_onTileConquest: function(data)
+	{
+		if(ige.client.chunksCache[data.xChunk+' '+data.yChunk])
+		{
+			var xTile = data.xChunk + data.xTile,
+				yTile = data.yChunk + data.yTile;
 			
-			if(data.owner != ige.client.playerId)
+			ige.client.blinkingTiles[xTile+' '+yTile] = false;
+			
+			if(data.owner == ige.client.playerId)
 			{
-				setTimeout(function()
-				{
-					ige.client.TextureMap.paintTile(xTile, yTile, 0, 0);
-					ige.client.TextureMap.cacheForceFrame();
-				}, 3000);
+				ige.client.TextureMap.paintTile(xTile, yTile, 0, 4);
 			}
+			else
+			{
+				ige.client.TextureMap.paintTile(xTile, yTile, 0, 0);
+			}
+			ige.client.TextureMap.cacheForceFrame();
 		}
 	},
 };

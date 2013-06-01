@@ -10,6 +10,8 @@ var Client = IgeClass.extend(
 		var self = this;
 		this.obj = [];
 		
+		this.blinkingTiles = [];
+		
 		self.gameTexture = {};
 		self.gameTexture.dirtSheet = new IgeCellSheet('./assets/textures/tiles/dirtSheet.png', 4, 1);
 		self.gameTexture.grassSheet = new IgeCellSheet('./assets/textures/tiles/grassSheet.png', 4, 1);
@@ -55,7 +57,9 @@ var Client = IgeClass.extend(
 						ige.network.define('characterMove', self._onCharacterMove);
 						ige.network.define('mapSection', self._onMapSection);
 						
-						ige.network.define('neuterConquest', self._onNeuterConquest);
+						ige.network.define('tileBlinking', self._onTileBlinking);
+						ige.network.define('tileAttack', self._onTileAttack);
+						ige.network.define('tileConquest', self._onTileConquest);
 						
 						ige.network.define('adminlink', self._onAdminLink);
 						
@@ -124,6 +128,29 @@ var Client = IgeClass.extend(
 				}
 			});
 		});
+	},
+	
+	doTileBlinking: function(x, y) {
+		if(!ige.client.blinkingTiles[x+' '+y])
+			return;
+		
+		var self = this;
+		
+		ige.client.TextureMap.paintTile(x, y, 0, 0);
+		ige.client.TextureMap.cacheForceFrame();
+		
+		setTimeout(function()
+		{
+			if(!ige.client.blinkingTiles[x+' '+y])
+				return;
+
+			ige.client.TextureMap.paintTile(x, y, 0, 4);
+			ige.client.TextureMap.cacheForceFrame();
+
+			setTimeout(function() {
+				self.doTileBlinking(x, y);
+			}, 200);
+		}, 200);
 	},
 });
 

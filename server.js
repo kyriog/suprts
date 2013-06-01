@@ -50,7 +50,9 @@ var Server = IgeClass.extend({
 						ige.network.define('onRightClick', self._onRightClick);
 						ige.network.define('onLeftClick', self._onLeftClick);
 						
-						ige.network.define('neuterConquest');
+						ige.network.define('tileBlinking');
+						ige.network.define('tileAttack');
+						ige.network.define('tileConquest');
 						
 						// Add the network stream component
 						ige.network.addComponent(IgeStreamComponent)

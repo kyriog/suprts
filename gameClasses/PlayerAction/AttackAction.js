@@ -53,7 +53,7 @@ var AttackAction =
 			}
 			else
 			{
-				AttackAction._AttackPlayerTile(x,y,tile,chunk,clientId);
+				AttackAction._AttackPlayerTile(xTitle,yTitle,tile,chunk,clientId);
 			}
 		}
 	},
@@ -73,20 +73,44 @@ var AttackAction =
 			yTile: y,
 			owner: tile.owner,
 		}
-		ige.network.send('neuterConquest', data);
+		ige.network.send('tileConquest', data);
 		PlayerStats.addLevel(tile.owner);
 	},
 	
 	_AttackPlayerTile: function(x,y,tile,chunk,clientId)
 	{
-		//TODO: Tile is conquested, need to blink in client view
-		//TODO: Player can defend theirs tiles, have to think how this can be implemented
+		tile.attackedBy = ige.server.clients[clientId];
+		tile.autocapture = true;
+		var data = {
+			xChunk: chunk.xChunk,
+			yChunk: chunk.yChunk,
+			xTile: x,
+			yTile: y,
+		}
+		
+		ige.network.send('tileBlinking', data, clientId);
+		
+		PlayerStats.getPlayer(tile.owner, function(player) {
+			if(player.clientId)
+			{
+				ige.network.send('tileAttack', data, player.clientId);
+			}
+		});
+		
 		setTimeout(function() 
 		{
-			tile.owned = true;
-			tile.owner = ige.server.clients[clientId];
-			ige.server.world.UpdateChunk(chunk);
-			ige.network.send('mapSection', chunk);
+			if(tile.autocapture)
+			{
+				PlayerStats.subLevel(tile.owner);
+				PlayerStats.addLevel(tile.attackedBy);
+
+				tile.owner = tile.attackedBy;
+				tile.attackedBy = 0;
+				tile.autocapture = false;
+
+				data.owner = tile.owner;
+				ige.network.send('tileConquest', data);
+			}
 		}, 20000);
 	},
 };
