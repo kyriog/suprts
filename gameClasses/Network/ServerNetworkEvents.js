@@ -151,7 +151,9 @@ var ServerNetworkEvents =
 	
 	_onPlayerDisconnect: function(clientId) 
 	{
-		ige.server.players[ige.server.clients[clientId]].clientId = false;
+		PlayerStats.getPlayer(ige.server.clients[clientId], function(player) {
+			player.clientId = false;
+		});
 		delete(ige.server.clients[clientId]);
 		
 		if (ige.server.characters[clientId]) 
