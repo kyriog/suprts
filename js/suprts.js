@@ -88,6 +88,11 @@ $("#logout-link").click(function()
 		$(".player-level").text("");
 	});
 	$("#top-buttons").fadeOut("1000");
+	$("#health-bar").fadeOut("500", function() {
+		$(".current-life").text("");
+		$(".max-life").text("");
+		$("#health-bar .graphic").css("width", "0px");
+	});
 	$("#action-bar").fadeOut("500", function() 
 	{
 		if(ige.client.activeButton) 

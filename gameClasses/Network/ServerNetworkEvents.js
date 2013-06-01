@@ -61,7 +61,7 @@ var ServerNetworkEvents =
 						money = rows[0].config_value / 10;
 						break; 
 				}
-				var query = 'INSERT INTO users (email, password, difficulty, money) VALUES ("'+data.email+'", SHA1("'+data.password+'"), "'+data.difficulty+'", "'+money+'");';
+				var query = 'INSERT INTO users (email, password, difficulty, money, currenthp, maxhp) VALUES ("'+data.email+'", SHA1("'+data.password+'"), "'+data.difficulty+'", "'+money+'");';
 				ige.mysql.query(query, function(err, rows) 
 				{
 					if(!err) 
@@ -77,6 +77,8 @@ var ServerNetworkEvents =
 							name: data.email,
 							gold: money,
 							level: 0,
+							currentHp: 10,
+							maxHp: 10,
 						};
 						ige.network.send('playerLogin', clientData, clientId);
 						// We should move these 3 lines to another method to avoid duplicate code
@@ -126,6 +128,8 @@ var ServerNetworkEvents =
 						name: rows[0].email,
 						gold: player.gold,
 						level: player.level,
+						currentHp: player.level*10,
+						maxHp: player.level*10,
 					};
 					ige.network.send('playerLogin', clientData, clientId);
 				});

@@ -172,6 +172,7 @@ h1 {
 
 #health-bar {
 	position: absolute;
+	display: none;
 	bottom: 90px;
 	width: 300px;
 	height: 20px;
@@ -186,7 +187,6 @@ h1 {
 	float: left;
 	background: #ff3019; /* Old browsers */
 	background: linear-gradient(to bottom, #ff3019 0%,#cf0404 100%); /* W3C */
-	width: 50%;
 	height: 20px;
 }
 
