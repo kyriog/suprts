@@ -10,6 +10,8 @@ var Server = IgeClass.extend({
 		this.clients = {};
 		this.players = {};
 		this.characters = {};
+		this.conquests = [];
+		this.attacks = {};
 		this.world = new World();
 		self.plants = new Plants();
 		

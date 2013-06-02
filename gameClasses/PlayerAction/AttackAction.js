@@ -53,7 +53,7 @@ var AttackAction =
 			}
 			else
 			{
-				AttackAction._AttackPlayerTile(xTitle,yTitle,tile,chunk,clientId);
+				AttackAction._AttackPlayerTile(xTitle,yTitle,xCharacter,yCharacter,tile,chunk,clientId);
 			}
 		}
 	},
@@ -77,11 +77,35 @@ var AttackAction =
 		PlayerStats.addLevel(tile.owner);
 	},
 	
-	_AttackPlayerTile: function(x,y,tile,chunk,clientId)
+	_AttackPlayerTile: function(x,y,xCharacter,yCharacter,tile,chunk,clientId)
 	{
 		var attacker = ige.server.clients[clientId];
 		if(tile.owner != attacker)
 		{
+			var xReal = chunk.xChunk + x,
+				yReal = chunk.yChunk + y;
+			
+			if(!ige.server.attacks[xCharacter+' '+yCharacter])
+			{
+				ige.server.attacks[xCharacter+' '+yCharacter] = ige.server.conquests.push({
+					conqueror: attacker,
+					attacked: tile.owner,
+					conquerorPos: {x: xCharacter, y: yCharacter},
+					tiles: [],
+					defendInterval: 0,
+					attackInterval: 0,
+				});
+				ige.server.attacks[xCharacter+' '+yCharacter]--;
+			}
+			var conquestId = ige.server.attacks[xCharacter+' '+yCharacter];
+			ige.server.conquests[conquestId].tiles.push({
+				tile: tile,
+				xChunk: chunk.xChunk,
+				yChunk: chunk.yChunk,
+				xTile: x,
+				yTile: y,
+			});
+			
 			tile.attackedBy = attacker;
 			tile.autocapture = true;
 			var data = {
@@ -94,7 +118,6 @@ var AttackAction =
 			ige.network.send('tileBlinking', data, clientId);
 			
 			PlayerStats.getPlayer(attacker, function(player) {
-				console.log(player);
 				player.capturing++;
 			});
 			
@@ -109,6 +132,8 @@ var AttackAction =
 			{
 				if(tile.autocapture)
 				{
+					delete(ige.server[xReal+' '+yReal]);
+					
 					PlayerStats.subLevel(tile.owner);
 					PlayerStats.addLevel(tile.attackedBy);
 	
