@@ -107,12 +107,19 @@ var PlayerStats =
 		for(id in ige.server.players)
 		{
 			var player = ige.server.players[id];
-			if(player.hp < player.maxHp())
+			if(player.hp != player.maxHp())
 			{
-				player.hp += Math.round(0.5 * player.level + 1);
 				if(player.hp > player.maxHp())
 				{
 					player.hp = player.maxHp();
+				}
+				else if(player.hp < player.maxHp())
+				{
+					player.hp += Math.round(0.5 * player.level + 1);
+					if(player.hp > player.maxHp())
+					{
+						player.hp = player.maxHp();
+					}
 				}
 				
 				if(player.clientId)
@@ -126,6 +133,24 @@ var PlayerStats =
 			}
 		}
 	},
+	
+	subLife: function(player, qty)
+	{
+		player.hp -= qty;
+		if(player.hp < 0)
+		{
+			player.hp = 0;
+		}
+		
+		if(player.clientId)
+		{
+			var data = {currentHp: player.hp, maxHp: player.maxHp()};
+			ige.network.send("updateLife", data, player.clientId);
+		}
+		
+		var query = 'UPDATE users SET hp = "'+player.hp+'" WHERE id = "'+id+'" LIMIT 1;';
+		ige.mysql.query(query);
+	}
 };
 
 if (typeof(module) !== 'undefined' && typeof(module.exports) !== 'undefined') { module.exports = PlayerStats; }
