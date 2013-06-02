@@ -6,6 +6,9 @@ var ServerNetworkEvents =
 		console.log('_onRightClick: function('+data+', '+clientId+')');
 		switch(data.action)
 		{
+			case 'Defend':
+				DefendAction.onDefendTile(data.x, data.y, clientId);
+			break;
 			case 'Attack':
 				AttackAction.onAttackTile(data.x,data.y,clientId);
 			break;

@@ -9,6 +9,7 @@ var config = {
 		{name: 'Title', path: './gameClasses/World/Title'},
 		{name: 'extend', path: './gameClasses/Utils/extend'},
 		{name: 'WorldGenerator', path: './gameClasses/World/WorldGenerator'},
+		{name: 'DefendAction', path: './gameClasses/PlayerAction/DefendAction'},
 		{name: 'AttackAction', path: './gameClasses/PlayerAction/AttackAction'},
 		{name: 'FertilizeAction', path: './gameClasses/PlayerAction/FertilizeAction'},
 		{name: 'HarvestAction', path: './gameClasses/PlayerAction/HarvestAction'},
