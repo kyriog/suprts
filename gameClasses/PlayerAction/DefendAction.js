@@ -9,7 +9,7 @@ var DefendAction =
 			
 			if(distance <= 2)
 			{
-				if(ige.server.attacks[x+' '+y])
+				if(ige.server.attacks[x+' '+y] !== undefined)
 				{
 					var conquest = ige.server.conquests[ige.server.attacks[x+' '+y]];
 					if(conquest.defendInterval)
@@ -23,10 +23,12 @@ var DefendAction =
 					DefendAction._disableAutocapture(conquest.tiles);
 					
 					PlayerStats.getPlayer(conquest.conqueror, function(player) {
+						player.capturing++;
 						conquest.defendInterval = setInterval(DefendAction._doDammage, 2000, conquest, player);
 					});
 					
 					PlayerStats.getPlayer(conquest.attacked, function(player) {
+						player.capturing++;
 						conquest.attackInterval = setInterval(DefendAction._doDammage, 2000, conquest, player);
 					});
 				}
@@ -56,6 +58,10 @@ var DefendAction =
 		{
 			clearInterval(conquest.defendInterval);
 			clearInterval(conquest.attackInterval);
+			
+			PlayerStats.getPlayer(conquest.attacked, function(attacked) {
+				attacked.capturing = 0;
+			});
 			
 			PlayerStats.getPlayer(conquest.conqueror, function(conqueror) {
 				conqueror.capturing = 0;
