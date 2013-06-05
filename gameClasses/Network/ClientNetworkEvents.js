@@ -15,7 +15,14 @@ var ClientNetworkEvents =
 		$(".player-gold").text(data.gold);
 		$(".player-level").text(data.level);
 		
-		$(".current-life").text(data.currentHp);
+		if(data.isResting)
+		{
+			$(".current-life").html("&#x2620;");
+		}
+		else
+		{
+			$(".current-life").text(data.currentHp);
+		}
 		$(".max-life").text(data.maxHp);
 		var lifePercentage = data.currentHp * 100 / data.maxHp;
 		$("#health-bar .graphic").css("width", lifePercentage+"%");
@@ -221,7 +228,14 @@ var ClientNetworkEvents =
 	
 	_onUpdateLife: function(data)
 	{
-		$(".current-life").text(data.currentHp);
+		if(data.isResting)
+		{
+			$(".current-life").html("&#x2620;");
+		}
+		else
+		{
+			$(".current-life").text(data.currentHp);
+		}
 		$(".max-life").text(data.maxHp);
 		var lifePercent = data.currentHp * 100 / data.maxHp;
 		$("#health-bar .graphic").css("width", lifePercent+"%");

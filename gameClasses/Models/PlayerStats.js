@@ -20,6 +20,7 @@ var PlayerStats =
 							return this.level * 10 + 10;
 						},
 						capturing: 0,
+						isResting: false,
 					}
 					callback(ige.server.players[id]);
 				}
@@ -122,9 +123,18 @@ var PlayerStats =
 					}
 				}
 				
+				if(player.isResting && player.hp == player.maxHp())
+				{
+					player.isResting = false;
+				}
+				
 				if(player.clientId)
 				{
-					var data = {currentHp: player.hp, maxHp: player.maxHp()};
+					var data = {
+						currentHp: player.hp,
+						maxHp: player.maxHp(),
+						isResting: player.isResting,
+					};
 					ige.network.send("updateLife", data, player.clientId);
 				}
 				
@@ -140,6 +150,10 @@ var PlayerStats =
 		if(player.hp < 0)
 		{
 			player.hp = 0;
+		}
+		if(player.hp === 0)
+		{
+			player.isResting = true;
 		}
 		
 		if(player.clientId)

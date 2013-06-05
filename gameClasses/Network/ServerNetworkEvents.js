@@ -139,6 +139,7 @@ var ServerNetworkEvents =
 						level: player.level,
 						currentHp: player.hp,
 						maxHp: player.maxHp(),
+						isResting: player.isResting,
 					};
 					ige.network.send('playerLogin', clientData, clientId);
 				});
