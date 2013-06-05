@@ -188,6 +188,7 @@ h1 {
 	background: #ff3019; /* Old browsers */
 	background: linear-gradient(to bottom, #ff3019 0%,#cf0404 100%); /* W3C */
 	height: 20px;
+	transition: width .5s;
 }
 
 #health-bar .text {
