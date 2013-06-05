@@ -3,32 +3,38 @@ var ServerNetworkEvents =
 
 	_onRightClick: function(data, clientId)
 	{
-		console.log('_onRightClick: function('+data+', '+clientId+')');
-		switch(data.action)
-		{
-			case 'Defend':
-				DefendAction.onDefendTile(data.x, data.y, clientId);
-			break;
-			case 'Attack':
-				AttackAction.onAttackTile(data.x,data.y,clientId);
-			break;
+		var playerId = ige.server.clients[clientId];
+		PlayerStats.getPlayer(playerId, function(player) {
+			console.log('_onRightClick: function('+data+', '+clientId+')');
+			switch(data.action)
+			{
+				case 'Defend':
+					if(!player.isResting)
+						DefendAction.onDefendTile(data.x, data.y, clientId);
+				break;
+				case 'Attack':
+					if(!player.isResting)
+						AttackAction.onAttackTile(data.x,data.y,clientId);
+				break;
 			
-			case 'Fertilize':
-				FertilizeAction.onFertilizeTitle(data.x,data.y,clientId);
-			break;
+				case 'Fertilize':
+					FertilizeAction.onFertilizeTitle(data.x,data.y,clientId);
+				break;
 			
-			case 'Watering':
-				WateringAction.onWateringTile(data.x,data.y,clientId);
-			break;
+				case 'Watering':
+					WateringAction.onWateringTile(data.x,data.y,clientId);
+				break;
 			
-			case 'Harvest':
-				HarvestAction.onHarvestTile(data.x,data.y,data.arg,clientId);
-			break;
+				case 'Harvest':
+					if(!player.isResting)
+						HarvestAction.onHarvestTile(data.x,data.y,data.arg,clientId);
+				break;
 			
-			case 'Plant':
-				PlantAction.onPlantAction(data.x,data.y,data.arg,clientId);
-			break;
-		}
+				case 'Plant':
+					PlantAction.onPlantAction(data.x,data.y,data.arg,clientId);
+				break;
+			}
+		});
 	},
 	
 	
