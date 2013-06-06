@@ -12,6 +12,7 @@ var DefendAction =
 				if(ige.server.attacks[x+' '+y] !== undefined)
 				{
 					var conquest = ige.server.conquests[ige.server.attacks[x+' '+y]];
+					conquest.autocapture = false;
 					if(conquest.defendInterval)
 					{
 						clearInterval(conquest.defendInterval);
