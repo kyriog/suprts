@@ -1,8 +1,8 @@
 var WateringAction = 
 {
-	onWateringTile: function(x,y,clientID)
+	onWateringTile: function(x,y,clientId)
 	{
-		console.log('onWateringTile: function('+x+','+y+','+clientID+')');
+		console.log('onWateringTile: function('+x+','+y+','+clientId+')');
 		var xChunk = x - x%10;
 		var yChunk = y - y%10;
 			
@@ -45,7 +45,7 @@ var WateringAction =
 		
 		if( Distance <= 2 )
 		{	
-			if(ige.server.clients[clientID] == tile.owner) // On verifie qu'on est bien sur une de nos tiles;
+			if(ige.server.clients[clientId] == tile.owner) // On verifie qu'on est bien sur une de nos tiles;
 			{
 				var chunk = ige.server.world.chunksCache[xChunk + ' ' + yChunk];
 				var tile = chunk.getTitle(xTitle,yTitle);
