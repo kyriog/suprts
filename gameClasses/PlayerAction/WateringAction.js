@@ -45,10 +45,12 @@ var WateringAction =
 		
 		if( Distance <= 2 )
 		{	
+			var chunk = ige.server.world.chunksCache[xChunk + ' ' + yChunk];
+			var tile = chunk.getTitle(xTitle,yTitle);
+				
 			if(ige.server.clients[clientId] == tile.owner) // On verifie qu'on est bien sur une de nos tiles;
 			{
-				var chunk = ige.server.world.chunksCache[xChunk + ' ' + yChunk];
-				var tile = chunk.getTitle(xTitle,yTitle);
+			
 				
 				if(tile.Humidity < 91)
 				{
