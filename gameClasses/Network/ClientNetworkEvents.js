@@ -177,6 +177,16 @@ var ClientNetworkEvents =
 	
 	},
 	
+	_onGracetime: function(data)
+	{
+		$.gritter.add({
+			title: 'Be nice!',
+			text: "You've just attacked that player — and win the war —. Please wait just a couple of minutes before attacking him again!",
+			sticky: false,
+			time: 10000,
+		});
+	},
+	
 	_onTileBlinking: function(data)
 	{
 		if(ige.client.chunksCache[data.xChunk+' '+data.yChunk])

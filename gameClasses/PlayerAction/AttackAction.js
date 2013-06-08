@@ -101,7 +101,11 @@ var AttackAction =
 				}
 			}
 			
-			if(canCapture)
+			if(!canCapture)
+			{
+				ige.network.send("gracetime", null, clientId);
+			}
+			else
 			{
 				var xReal = chunk.xChunk + x,
 					yReal = chunk.yChunk + y;

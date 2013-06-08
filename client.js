@@ -57,6 +57,7 @@ var Client = IgeClass.extend(
 						ige.network.define('characterMove', self._onCharacterMove);
 						ige.network.define('mapSection', self._onMapSection);
 						
+						ige.network.define('gracetime', self._onGracetime);
 						ige.network.define('tileBlinking', self._onTileBlinking);
 						ige.network.define('tileAttack', self._onTileAttack);
 						ige.network.define('tileConquest', self._onTileConquest);
