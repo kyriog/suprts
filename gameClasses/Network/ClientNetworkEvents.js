@@ -215,6 +215,26 @@ var ClientNetworkEvents =
 		}
 	},
 	
+	_onAttackAnim: function(data)
+	{
+		var xRand = Math.round(Math.random() * 100) / 400,
+			yRand = Math.round(Math.random() * 100) / 400,
+			xSign = Math.round(Math.random()),
+			ySign = Math.round(Math.random());
+
+		var x = (xSign ? data.x + xRand : data.x - xRand),
+			y = (ySign ? data.y + yRand : data.y - yRand);
+
+		var h = new Hit();
+		h.mount(ige.client.TitleMap);
+		var point = new IgePoint(x*40 - 8, y*40 - 9, 0);
+		h.translateToPoint(point.thisToIso());
+
+		setTimeout(function() {
+			h.destroy();
+		}, 500);
+	},
+	
 	_onTileConquest: function(data)
 	{
 		if(ige.client.chunksCache[data.xChunk+' '+data.yChunk])

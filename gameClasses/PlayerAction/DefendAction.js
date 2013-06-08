@@ -25,12 +25,12 @@ var DefendAction =
 					
 					PlayerStats.getPlayer(conquest.conqueror, function(player) {
 						player.capturing++;
-						conquest.defendInterval = setInterval(DefendAction._doDammage, 2000, conquest, player);
+						conquest.defendInterval = setInterval(DefendAction._doDammage, 2000, conquest, player, xCharacter, yCharacter);
 					});
 					
 					PlayerStats.getPlayer(conquest.attacked, function(player) {
 						player.capturing++;
-						conquest.attackInterval = setInterval(DefendAction._doDammage, 2000, conquest, player);
+						conquest.attackInterval = setInterval(DefendAction._doDammage, 2000, conquest, player, x, y);
 					});
 				}
 			}
@@ -44,10 +44,11 @@ var DefendAction =
 			}
 		},
 		
-		_doDammage: function(conquest, player)
+		_doDammage: function(conquest, player, x, y)
 		{
 			if(Math.random() <= 0.8) // Default weapon hit ratio is 8/10
 			{
+				ige.network.send('attackAnim', {x: x, y: y});
 				PlayerStats.subLife(player, 5);
 				if(player.hp == 0) {
 					DefendAction._stopWar(conquest);

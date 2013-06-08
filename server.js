@@ -56,6 +56,7 @@ var Server = IgeClass.extend({
 						ige.network.define('gracetime');
 						ige.network.define('tileBlinking');
 						ige.network.define('tileAttack');
+						ige.network.define('attackAnim');
 						ige.network.define('tileConquest');
 						
 						ige.network.define('updateLife');

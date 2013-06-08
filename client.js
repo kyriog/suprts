@@ -60,6 +60,7 @@ var Client = IgeClass.extend(
 						ige.network.define('gracetime', self._onGracetime);
 						ige.network.define('tileBlinking', self._onTileBlinking);
 						ige.network.define('tileAttack', self._onTileAttack);
+						ige.network.define('attackAnim', self._onAttackAnim);
 						ige.network.define('tileConquest', self._onTileConquest);
 						
 						ige.network.define('updateLife', self._onUpdateLife);
