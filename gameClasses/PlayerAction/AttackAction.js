@@ -82,79 +82,101 @@ var AttackAction =
 		var attacker = ige.server.clients[clientId];
 		if(tile.owner != attacker)
 		{
-			var xReal = chunk.xChunk + x,
-				yReal = chunk.yChunk + y;
-			
-			if(!ige.server.attacks[xCharacter+' '+yCharacter])
+			var canCapture = true;
+			var gracetime = ige.server.gracetime[attacker];
+			if(gracetime)
 			{
-				ige.server.attacks[xCharacter+' '+yCharacter] = ige.server.conquests.push({
-					conqueror: attacker,
-					attacked: tile.owner,
-					conquerorPos: {x: xCharacter, y: yCharacter},
-					tiles: [],
-					defendInterval: 0,
-					attackInterval: 0,
-					autocapture: true,
-				});
-				ige.server.attacks[xCharacter+' '+yCharacter]--;
-			}
-			var conquestId = ige.server.attacks[xCharacter+' '+yCharacter];
-			ige.server.conquests[conquestId].tiles.push({
-				tile: tile,
-				xChunk: chunk.xChunk,
-				yChunk: chunk.yChunk,
-				xTile: x,
-				yTile: y,
-			});
-			
-			tile.attackedBy = attacker;
-			if(ige.server.conquests[conquestId].autocapture)
-			{
-				tile.autocapture = true;
-			}
-			var data = {
-				xChunk: chunk.xChunk,
-				yChunk: chunk.yChunk,
-				xTile: x,
-				yTile: y,
-			}
-			
-			ige.network.send('tileBlinking', data, clientId);
-			
-			PlayerStats.getPlayer(attacker, function(player) {
-				player.capturing++;
-			});
-			
-			PlayerStats.getPlayer(tile.owner, function(player) {
-				if(player.clientId)
+				for(id in gracetime)
 				{
-					ige.network.send('tileAttack', data, player.clientId);
-				}
-			});
-			
-			if(ige.server.conquests[conquestId].autocapture)
-			{
-				setTimeout(function() 
-				{
-					if(tile.autocapture)
+					if(new Date().getTime() > gracetime[id].upto)
 					{
-						delete(ige.server[xReal+' '+yReal]);
-					
-						PlayerStats.subLevel(tile.owner);
-						PlayerStats.addLevel(tile.attackedBy);
-	
-						tile.owner = tile.attackedBy;
-						tile.attackedBy = 0;
-						tile.autocapture = false;
-	
-						data.owner = tile.owner;
-						ige.network.send('tileConquest', data);
-					
-						PlayerStats.getPlayer(tile.owner, function(player) {
-							player.capturing--;
-						});
+						delete gracetime[id];
+						continue;
 					}
-				}, 20000);
+					if(gracetime[id].attacked == tile.owner)
+					{
+						canCapture = false;
+						break;
+					}
+				}
+			}
+			
+			if(canCapture)
+			{
+				var xReal = chunk.xChunk + x,
+					yReal = chunk.yChunk + y;
+			
+				if(!ige.server.attacks[xCharacter+' '+yCharacter])
+				{
+					ige.server.attacks[xCharacter+' '+yCharacter] = ige.server.conquests.push({
+						conqueror: attacker,
+						attacked: tile.owner,
+						conquerorPos: {x: xCharacter, y: yCharacter},
+						tiles: [],
+						defendInterval: 0,
+						attackInterval: 0,
+						autocapture: true,
+					});
+					ige.server.attacks[xCharacter+' '+yCharacter]--;
+				}
+				var conquestId = ige.server.attacks[xCharacter+' '+yCharacter];
+				ige.server.conquests[conquestId].tiles.push({
+					tile: tile,
+					xChunk: chunk.xChunk,
+					yChunk: chunk.yChunk,
+					xTile: x,
+					yTile: y,
+				});
+			
+				tile.attackedBy = attacker;
+				if(ige.server.conquests[conquestId].autocapture)
+				{
+					tile.autocapture = true;
+				}
+				var data = {
+					xChunk: chunk.xChunk,
+					yChunk: chunk.yChunk,
+					xTile: x,
+					yTile: y,
+				}
+			
+				ige.network.send('tileBlinking', data, clientId);
+			
+				PlayerStats.getPlayer(attacker, function(player) {
+					player.capturing++;
+				});
+			
+				PlayerStats.getPlayer(tile.owner, function(player) {
+					if(player.clientId)
+					{
+						ige.network.send('tileAttack', data, player.clientId);
+					}
+				});
+			
+				if(ige.server.conquests[conquestId].autocapture)
+				{
+					setTimeout(function() 
+					{
+						if(tile.autocapture)
+						{
+							delete(ige.server[xReal+' '+yReal]);
+					
+							PlayerStats.subLevel(tile.owner);
+							PlayerStats.addLevel(tile.attackedBy);
+	
+							tile.owner = tile.attackedBy;
+							tile.attackedBy = 0;
+							tile.autocapture = false;
+	
+							data.owner = tile.owner;
+							ige.network.send('tileConquest', data);
+					
+							PlayerStats.getPlayer(tile.owner, function(player) {
+								player.capturing--;
+							});
+						}
+					}, 20000);
+				}
 			}
 		}
 	},

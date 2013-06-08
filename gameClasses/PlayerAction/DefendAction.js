@@ -103,6 +103,16 @@ var DefendAction =
 						}
 						ige.network.send('tileConquest', data);
 					}
+					
+					var gracetime = ige.server.gracetime[conquest.conqueror];
+					if(!gracetime)
+					{
+						ige.server.gracetime[conquest.conqueror] = gracetime = [];
+					}
+					gracetime.push({
+						attacked: conquest.attacked,
+						upto: new Date().getTime() + 3600000, // One hour
+					});
 				}
 				delete(ige.server.attacks[conquest.conquerorPos.x+' '+conquest.conquerorPos.y]);
 				delete(conquest);
