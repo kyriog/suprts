@@ -3,6 +3,7 @@ var igeClientConfig = {
 		/* Your custom game JS scripts */
 		'./gameClasses/Network/ClientNetworkEvents.js',
 		'./gameClasses/Entities/Player.js',
+		'./gameClasses/Entities/Building.js',
 		'./gameClasses/Entities/Character.js',
 		'./gameClasses/Models/Plants.js',
 		'./gameClasses/Entities/Plant.js',

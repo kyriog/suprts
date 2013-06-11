@@ -105,6 +105,11 @@ var Server = IgeClass.extend({
 						
 						// Starting life regeneration of players
 						setInterval(PlayerStats.regenLife, 3000);
+						
+						var B = new Building();
+						B.streamMode(1).mount(ige.server.TitleMap);
+						var point = new IgePoint(0, 0, 0);
+						B.translateToPoint(point.thisToIso());
 					}
 				});
 			});

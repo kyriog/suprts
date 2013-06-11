@@ -3,6 +3,7 @@ var config = {
 		{name: 'ServerNetworkEvents', path: './gameClasses/Network/ServerNetworkEvents'},
 		{name: 'Player', path: './gameClasses/Entities/Player'},
 		{name: 'Plant', path: './gameClasses/Entities/Plant'},
+		{name: 'Building', path: './gameClasses/Entities/Building'},
 		{name: 'Plants', path: './gameClasses/Models/Plants'},
 		{name: 'PlayerStats', path: './gameClasses/Models/PlayerStats'},
 		{name: 'World', path: './gameClasses/World/World'},
