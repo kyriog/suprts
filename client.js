@@ -3,8 +3,6 @@ var Client = IgeClass.extend(
 	classId: 'Client',
 	init: function () 
 	{
-		// Remember to delete this when going to production mode, it's a debug thing!
-		ige.showStats(1);
 		ige.globalSmoothing(true);
 
 		var self = this;
