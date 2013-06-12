@@ -110,9 +110,14 @@ var DefendAction =
 					{
 						ige.server.gracetime[conquest.conqueror] = gracetime = [];
 					}
-					gracetime.push({
-						attacked: conquest.attacked,
-						upto: new Date().getTime() + 3600000, // One hour
+					PlayerStats.getPlayer(conquest.attacked, function(attacked) {
+						var time = 3600000 - attacked.level * 60000; // One hour - 1 minute per attacked level
+						if(time > 0) {
+							gracetime.push({
+								attacked: conquest.attacked,
+								upto: new Date().getTime() + time,
+							});
+						}
 					});
 				}
 				delete(ige.server.attacks[conquest.conquerorPos.x+' '+conquest.conquerorPos.y]);

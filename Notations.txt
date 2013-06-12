@@ -72,7 +72,7 @@ DONE • Regeneration speed depends on the level (2 points)
 DONE • A "resting" farmer cannot fight or harvest but he can water or fertilize (3 points)
 DONE • The winner takes the land. (3 points)
 DONE • The winner cannot attack the same farmer again during a grace time (3 points)
-• The grace time depends on the attacked level (higher level, lower time) (3 points)
+DONE • The grace time depends on the attacked level (higher level, lower time) (3 points)
 DONE • If the attacked player wins he can counter-attack with no grace time (4 points)
 
 Alliances (21 points)
