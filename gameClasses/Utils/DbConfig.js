@@ -25,7 +25,7 @@ var DbConfig =
 	{
 		if(ige.server.dbconfig[name]) // We can't create new config values!
 		{
-			ige.server.dbconfig[name] = value;
+			ige.server.dbconfig[name] = parseFloat(value);
 			
 			var query = 'UPDATE config SET config_value="'+value+'" WHERE config_name="'+name+'" LIMIT 1;';
 			ige.mysql.query(query, function(err) {
