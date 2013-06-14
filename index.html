@@ -97,10 +97,144 @@
 				<h1>Administration</h1>
 				<button class="close hoverlay-close hoverlay-close-btn">&times;</button>
 				<form id="admin">
+					<h4>Money</h4>
 					<div class="row">
-						<div class="span4"><label for="start_money">Start money</label></div>
-						<div class="span4"><input type="number" name="start_money" id="start_money" /></div>
+						<div class="span4"><label for="startMoney">Start money</label></div>
+						<div class="span4"><input type="number" name="startMoney" id="startMoney" /></div>
 					</div>
+					<div class="row">
+						<div class="span4"><label for="normalLevelMoneyDivider">Normal level money divider</label></div>
+						<div class="span4"><input type="number" name="normalLevelMoneyDivider" id="normalLevelMoneyDivider" /></div>
+					</div>
+					<div class="row">
+						<div class="span4"><label for="hardLevelMoneyDivider">Hard level money divider</label></div>
+						<div class="span4"><input type="number" name="hardLevelMoneyDivider" id="hardLevelMoneyDivider" /></div>
+					</div>
+
+					<h4>Health</h4>
+					<div class="row">
+						<div class="span4"><label for="baseHp">Base health points</label></div>
+						<div class="span4"><input type="number" name="baseHp" id="baseHp" /></div>
+					</div>
+					<div class="row">
+						<div class="span4"><label for="hpPerLevel">Health points earned each level</label></div>
+						<div class="span4"><input type="number" name="hpPerLevel" id="hpPerLevel" /></div>
+					</div>
+					<div class="row">
+						<div class="span4"><label for="baseRegen">Base HP regenerate</label></div>
+						<div class="span4"><input type="number" name="baseRegen" id="baseRegen" /></div>
+					</div>
+					<div class="row">
+						<div class="span4"><label for="regenPerLevel">HP regenerated per level</label></div>
+						<div class="span4"><input type="number" name="regenPerLevel" id="regenPerLevel" /></div>
+					</div>
+
+					<h4>Fights</h4>
+					<div class="row">
+						<div class="span4"><label for="hitDamage">Damages per hit</label></div>
+						<div class="span4"><input type="number" name="hitDamage" id="hitDamage" /></div>
+					</div>
+					<div class="row">
+						<div class="span4"><label for="hitRatio">Hit ratio</label></div>
+						<div class="span4"><input type="number" name="hitRatio" id="hitRatio" /></div>
+					</div>
+					<div class="row">
+						<div class="span4"><label for="hitEachXSeconds">Hit each X seconds</label></div>
+						<div class="span4"><input type="number" name="hitEachXSeconds" id="hitEachXSeconds" /></div>
+					</div>
+					<div class="row">
+						<div class="span4"><label for="gracetimeBase">Base gracetime (seconds)</label></div>
+						<div class="span4"><input type="number" name="gracetimeBase" id="gracetimeBase" /></div>
+					</div>
+					<div class="row">
+						<div class="span4"><label for="gracetimeReductionPerLevel">Reduct gracetime by X seconds per attacked player level</label></div>
+						<div class="span4"><input type="number" name="gracetimeReductionPerLevel" id="gracetimeReductionPerLevel" /></div>
+					</div>
+
+					<h4>Plants</h4>
+					<table class="table table-condensed">
+						<thead>
+							<tr>
+								<th></th>
+								<th>Corn</th>
+								<th>Tomato</th>
+								<th>Wheat</th>
+							<tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Decay</td>
+								<td><input type="number" name="cornDecay" class="input-mini" /></td>
+								<td><input type="number" name="tomatoDecay" class="input-mini" /></td>
+								<td><input type="number" name="wheatDecay" class="input-mini" /></td>
+							</tr>
+							<tr>
+								<td>Fertility</td>
+								<td><input type="number" name="cornFertility" class="input-mini" /></td>
+								<td><input type="number" name="tomatoFertility" class="input-mini" /></td>
+								<td><input type="number" name="wheatFertility" class="input-mini" /></td>
+							</tr>
+							<tr>
+								<td>Humidity</td>
+								<td><input type="number" name="cornHumidity" class="input-mini" /></td>
+								<td><input type="number" name="tomatoHumidity" class="input-mini" /></td>
+								<td><input type="number" name="wheatHumidity" class="input-mini" /></td>
+							</tr>
+							<tr>
+								<td>Maturation</td>
+								<td><input type="number" name="cornMaturation" class="input-mini" /></td>
+								<td><input type="number" name="tomatoMaturation" class="input-mini" /></td>
+								<td><input type="number" name="wheatMaturation" class="input-mini" /></td>
+							</tr>
+							<tr>
+								<td>Price</td>
+								<td><input type="number" name="cornPrice" class="input-mini" /></td>
+								<td><input type="number" name="tomatoPrice" class="input-mini" /></td>
+								<td><input type="number" name="wheatPrice" class="input-mini" /></td>
+							</tr>
+							<tr>
+								<td>Productivity</td>
+								<td><input type="number" name="cornProductivity" class="input-mini" /></td>
+								<td><input type="number" name="tomatoProductivity" class="input-mini" /></td>
+								<td><input type="number" name="wheatProductivity" class="input-mini" /></td>
+							</tr>
+							<tr>
+								<td>Storability</td>
+								<td><input type="number" name="cornStorability" class="input-mini" /></td>
+								<td><input type="number" name="tomatoStorability" class="input-mini" /></td>
+								<td><input type="number" name="wheatStorability" class="input-mini" /></td>
+							</tr>
+							<tr>
+								<td>Decay</td>
+								<td><input type="number" name="cornDecay" class="input-mini" /></td>
+								<td><input type="number" name="tomatoDecay" class="input-mini" /></td>
+								<td><input type="number" name="wheatDecay" class="input-mini" /></td>
+							</tr>
+						</tbody>
+					</table>
+
+					<h4>Harvesting</h4>
+					<div class="row">
+						<div class="span4"><label for="fertilizerCost">Fertilizer cost</label></div>
+						<div class="span4"><input type="number" name="fertilizerCost" id="fertilizerCost" /></div>
+					</div>
+					<div class="row">
+						<div class="span4"><label for="fertilizerAddFertility">Fertility added by fertilizer</label></div>
+						<div class="span4"><input type="number" name="fertilizerAddFertility" id="fertilizerAddFertility" /></div>
+					</div>
+					<div class="row">
+						<div class="span4"><label for="wateringAddHumidity">Humidity added by watering</label></div>
+						<div class="span4"><input type="number" name="wateringAddHumidity" id="wateringAddHumidity" /></div>
+					</div>
+					<div class="row">
+						<div class="span4"><label for="plantCorrectSell">Correct plant status sell price</label></div>
+						<div class="span4"><input type="number" name="plantCorrectSell" id="plantCorrectSell" /></div>
+					</div>
+					<div class="row">
+						<div class="span4"><label for="plantBestSell">Best plant status sell price</label></div>
+						<div class="span4"><input type="number" name="plantBestSell" id="plantBestSell" /></div>
+					</div>
+					
 					<button type="submit" class="btn btn-primary hoverlay-bottom-btn">Save settings</button>
 					<button class="btn btn-inverse hoverlay-close-btn hoverlay-bottom-btn">Close without saving</button>
 				</form>
