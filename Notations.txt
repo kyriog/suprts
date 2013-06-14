@@ -1,9 +1,9 @@
 Notation:
 
-Documentation(6 points) 
-• Spelling and grammar (1 points)
-• Relevancy (1 points)
-• Technical documentation (4 point)
+Documentation(6 points)  6 / 6
+DONE • Spelling and grammar (1 points)
+DONE • Relevancy (1 points)
+DONE • Technical documentation (4 point)
 
 User and accounts( 6 points) 6 / 6
 DONE • Users can register(2 point)
@@ -57,7 +57,7 @@ DONE • The farmer can sell harvested crop immediately (8 points)
 TODO • The farmer can store in storage buildings if there is enough room left (6 points) 
 TODO • The price of the various crops fluctuate over the time (6 points)
 
-Fights (49 points) 3 / 49
+Fights (49 points) 37 / 49
 DONE • Attacked tiles blink (3 points)
 • Farmers can have different weapons (3 points)
 • Different weapons have power, hit ratio, hits per second, price (3 points)
