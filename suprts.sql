@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Ven 14 Juin 2013 à 12:29
+-- Généré le: Ven 14 Juin 2013 à 15:22
 -- Version du serveur: 5.5.27
 -- Version de PHP: 5.4.7
 
@@ -72,6 +72,7 @@ INSERT INTO `config` (`config_name`, `config_value`) VALUES
 ('normalLevelMoneyDivider', 2),
 ('plantBestSell', 200),
 ('plantCorrectSell', 100),
+('regenEachXSeconds', 3),
 ('regenPerLevel', 1),
 ('startMoney', 1000),
 ('tomatoDecay', 10),

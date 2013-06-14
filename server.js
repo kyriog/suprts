@@ -107,7 +107,7 @@ var Server = IgeClass.extend({
 						PlantAction.LoadPlants();
 						
 						// Starting life regeneration of players
-						setInterval(PlayerStats.regenLife, 3000);
+						setInterval(PlayerStats.regenLife, self.dbconfig.regenEachXSeconds * 1000);
 						
 						var B = new Building();
 						B.streamMode(1).mount(ige.server.TitleMap);
