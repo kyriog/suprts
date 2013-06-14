@@ -8,6 +8,8 @@ var PlayerStats =
 			ige.mysql.query(query, function(err, rows) {
 				if(!err && rows[0])
 				{
+					var dbconfig = ige.server.dbconfig;
+					
 					ige.server.players[id] =
 					{
 						id: id,
@@ -17,7 +19,7 @@ var PlayerStats =
 						level: rows[0].level,
 						hp: rows[0].hp,
 						maxHp: function() {
-							return this.level * 10 + 10;
+							return this.level * dbconfig.hpPerLevel + dbconfig.baseHp;
 						},
 						capturing: 0,
 						isResting: false,
@@ -116,7 +118,9 @@ var PlayerStats =
 				}
 				else if(player.hp < player.maxHp())
 				{
-					player.hp += Math.round(0.5 * player.level + 1);
+					var dbconfig = ige.server.dbconfig;
+					
+					player.hp += Math.round(dbconfig.regenPerLevel * player.level + dbconfig.baseRegen);
 					if(player.hp > player.maxHp())
 					{
 						player.hp = player.maxHp();

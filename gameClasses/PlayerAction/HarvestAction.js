@@ -69,18 +69,20 @@ var HarvestAction =
 		
 		if(plant)
 		{
+			var dbconfig = ige.server.dbconfig;
+			
 			if(plant.percentRate > 80)
 			{
 				PlayerStats.getPlayer(ige.server.clients[clientID], function(player)
 				{
-					PlayerStats.addGold(player.id, 100);
+					PlayerStats.addGold(player.id, dbconfig.plantCorrectSell);
 				});
 			}
 			else if(plant.percentRate == 100)
 			{
 				PlayerStats.getPlayer(ige.server.clients[clientID], function(player)
 				{
-					PlayerStats.addGold(player.id, 200);
+					PlayerStats.addGold(player.id, dbconfig.plantBestSell);
 				});
 			}
 			
@@ -103,18 +105,20 @@ var HarvestAction =
 		
 		if(plant)
 		{
+			var dbconfig = ige.server.dbconfig;
+			
 			if(plant.percentRate > 80)
 			{
 				PlayerStats.getPlayer(ige.server.clients[clientID], function(player)
 				{
-					PlayerStats.addGold(player.id, 100);
+					PlayerStats.addGold(player.id, dbconfig.plantCorrectSell);
 				});
 			}
 			else if(plant.percentRate == 100)
 			{
 				PlayerStats.getPlayer(ige.server.clients[clientID], function(player)
 				{
-					PlayerStats.addGold(player.id, 200);
+					PlayerStats.addGold(player.id, dbconfig.plantBestSell);
 				});
 			}
 			plant.destroy();

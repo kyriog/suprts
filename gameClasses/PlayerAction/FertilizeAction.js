@@ -52,24 +52,20 @@ var FertilizeAction =
 			{
 				PlayerStats.getPlayer(ige.server.clients[clientID], function(player)
 				{
+					var dbconfig = ige.server.dbconfig;
+					
 					console.log('PlayerStats.getPlayer('+ige.server.clients[clientID]+', function(player)');
 					
-					if(player.gold > 9)
+					if(player.gold >= dbconfig.fertilizerCost)
 					{
-						if(tile.Fertility < 91)
-						{
-							tile.Fertility = tile.Fertility + 10;
-						}
-						else
+						tile.Fertility += dbconfig.fertilizerAddFertility;
+						if(tile.Fertility > 100)
 						{
 							tile.Fertility = 100;
 						}
 						
-						if(tile.MaxFertility < 91)
-						{
-							tile.MaxFertility = tile.MaxFertility + 10;
-						}
-						else
+						tile.MaxFertility += dbconfig.fertilizerAddFertility;
+						if(tile.MaxFertility > 100)
 						{
 							tile.MaxFertility = 100;
 						}
@@ -78,7 +74,7 @@ var FertilizeAction =
 						chunk.setTitle(x,y,tile);
 						ige.server.world.UpdateChunk(chunk);
 						ige.network.send('mapSection', chunk);
-						PlayerStats.subGold(player.id, 10);
+						PlayerStats.subGold(player.id, dbconfig.fertilizerCost);
 						
 					}
 				});

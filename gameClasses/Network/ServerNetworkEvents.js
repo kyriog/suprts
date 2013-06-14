@@ -58,55 +58,45 @@ var ServerNetworkEvents =
 	
 	_onPlayerRegister: function(data, clientId) 
 	{
-		var query = 'SELECT config_value FROM config WHERE config_name="start_money"';
+		var dbconfig = ige.server.dbconfig;
+				
+		var money = 0;
+		switch(data.difficulty) 
+		{
+			case "easy":
+				money = dbconfig.startMoney;
+				break;
+			case "normal":
+				money = dbconfig.startMoney / dbconfig.normalLevelMoneyDivider;
+				break;
+			case "hard":
+				money = dbconfig.startMoney / dbconfig.hardLevelMoneyDivider;
+				break; 
+		}
+		var query = 'INSERT INTO users (email, password, difficulty, money, hp) VALUES ("'+data.email+'", SHA1("'+data.password+'"), "'+data.difficulty+'", "'+money+'", "10");';
 		ige.mysql.query(query, function(err, rows) 
 		{
 			if(!err) 
 			{
-				var money = 0;
-				switch(data.difficulty) 
-				{
-					case "easy":
-						money = rows[0].config_value;
-						break;
-					case "normal":
-						money = rows[0].config_value / 2;
-						break;
-					case "hard":
-						money = rows[0].config_value / 10;
-						break; 
-				}
-				var query = 'INSERT INTO users (email, password, difficulty, money, hp) VALUES ("'+data.email+'", SHA1("'+data.password+'"), "'+data.difficulty+'", "'+money+'", "10");';
-				ige.mysql.query(query, function(err, rows) 
-				{
-					if(!err) 
-					{
-						ige.server.clients[clientId] = rows.insertId;
-						PlayerStats.getPlayer(rows.insertId, function(player) {
-							player.clientId = clientId;
-						});
-						
-						clientData = {
-							is_admin: 0,
-							// We may add a player name, it could be prettier than an ugly email address
-							name: data.email,
-							gold: money,
-							level: 0,
-							currentHp: 10,
-							maxHp: 10,
-						};
-						ige.network.send('playerLogin', clientData, clientId);
-						// We should move these 3 lines to another method to avoid duplicate code
-						ige.server.characters[clientId] = new Player().id(clientId).streamMode(1).mount(ige.server.TitleMap);
-						ige.server.characters[clientId].translateTo(0,0,0);
-						ige.network.send('playerEntity', {id: ige.server.characters[clientId].id(), dbId: rows.insertId}, clientId);
-					} 
-					else 
-					{
-						console.log(err);
-						ige.network.send('playerRegisterError', null, clientId);
-					}
+				ige.server.clients[clientId] = rows.insertId;
+				PlayerStats.getPlayer(rows.insertId, function(player) {
+					player.clientId = clientId;
 				});
+				
+				clientData = {
+					is_admin: 0,
+					// We may add a player name, it could be prettier than an ugly email address
+					name: data.email,
+					gold: money,
+					level: 0,
+					currentHp: 10,
+					maxHp: 10,
+				};
+				ige.network.send('playerLogin', clientData, clientId);
+				// We should move these 3 lines to another method to avoid duplicate code
+				ige.server.characters[clientId] = new Player().id(clientId).streamMode(1).mount(ige.server.TitleMap);
+				ige.server.characters[clientId].translateTo(0,0,0);
+				ige.network.send('playerEntity', {id: ige.server.characters[clientId].id(), dbId: rows.insertId}, clientId);
 			} 
 			else 
 			{
@@ -235,18 +225,7 @@ var ServerNetworkEvents =
 			{
 				for(config in data) 
 				{
-					query = 'UPDATE config SET config_value="'+data[config]+'" WHERE config_name="'+config+'";';
-					ige.mysql.query(query, function(err) 
-					{
-						if(err)
-						{
-							console.log("Unable to update value for "+config);
-						}
-						else
-						{
-							console.log("Setting '"+config+"' to '"+data[config]+"'");
-						}
-					});
+					DbConfig.setConfig(config, data[config]);
 				}
 			}
 		});

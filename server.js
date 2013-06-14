@@ -6,6 +6,15 @@ var Server = IgeClass.extend({
 		var self = this;
 		ige.timeScale(1);
 		
+		// Connecting to MySQL server
+		ige.addComponent(IgeMySqlComponent, options.db).mysql.connect(function(err, db) {
+			if(err)
+				console.log(err);
+		});
+		
+		this.dbconfig = {};
+		DbConfig.loadConfig();
+		
 		this.users = {};
 		this.clients = {};
 		this.players = {};
@@ -14,15 +23,9 @@ var Server = IgeClass.extend({
 		this.attacks = {};
 		this.gracetime = {};
 		this.world = new World();
-		self.plants = new Plants();
+		self.plants = new Plants(this.dbconfig);
 		
 		this.implement(ServerNetworkEvents);
-		
-		// Connecting to MySQL server
-		ige.addComponent(IgeMySqlComponent, options.db).mysql.connect(function(err, db) {
-			if(err)
-				console.log(err);
-		});
 		
 		// Add the networking component
 		ige.addComponent(IgeNetIoComponent)

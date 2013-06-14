@@ -115,6 +115,7 @@ var ClientNetworkEvents =
 	
 	_onMapSection: function (data)
 	{
+		console.log("map section");
 		var Index = 0;
 		
 		ige.client.chunksCache[data.xChunk+' '+data.yChunk] = data;

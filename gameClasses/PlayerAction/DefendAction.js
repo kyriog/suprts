@@ -11,6 +11,8 @@ var DefendAction =
 			{
 				if(ige.server.attacks[x+' '+y] !== undefined)
 				{
+					var dbconfig = ige.server.dbconfig;
+
 					var conquest = ige.server.conquests[ige.server.attacks[x+' '+y]];
 					conquest.autocapture = false;
 					if(conquest.defendInterval)
@@ -25,12 +27,12 @@ var DefendAction =
 					
 					PlayerStats.getPlayer(conquest.conqueror, function(player) {
 						player.capturing++;
-						conquest.defendInterval = setInterval(DefendAction._doDammage, 2000, conquest, player, xCharacter, yCharacter);
+						conquest.defendInterval = setInterval(DefendAction._doDammage, dbconfig.hitEachXSeconds, conquest, player, xCharacter, yCharacter);
 					});
 					
 					PlayerStats.getPlayer(conquest.attacked, function(player) {
 						player.capturing++;
-						conquest.attackInterval = setInterval(DefendAction._doDammage, 2000, conquest, player, x, y);
+						conquest.attackInterval = setInterval(DefendAction._doDammage, dbconfig.hitEachXSeconds, conquest, player, x, y);
 					});
 				}
 			}
@@ -46,10 +48,12 @@ var DefendAction =
 		
 		_doDammage: function(conquest, player, x, y)
 		{
-			if(Math.random() <= 0.8) // Default weapon hit ratio is 8/10
+			var dbconfig = ige.server.dbconfig;
+			
+			if(Math.random() <= dbconfig.hitRatio) // Default weapon hit ratio is 8/10
 			{
 				ige.network.send('attackAnim', {x: x, y: y});
-				PlayerStats.subLife(player, 5);
+				PlayerStats.subLife(player, dbconfig.hitDamage);
 				if(player.hp == 0) {
 					DefendAction._stopWar(conquest);
 				}
@@ -111,7 +115,9 @@ var DefendAction =
 						ige.server.gracetime[conquest.conqueror] = gracetime = [];
 					}
 					PlayerStats.getPlayer(conquest.attacked, function(attacked) {
-						var time = 3600000 - attacked.level * 60000; // One hour - 1 minute per attacked level
+						var dbconfig = ige.server.dbconfig;
+
+						var time = dbconfig.gracetimeBase * 1000 - attacked.level * dbconfig.gracetimeReductionPerLevel * 1000; // One hour - 1 minute per attacked level
 						if(time > 0) {
 							gracetime.push({
 								attacked: conquest.attacked,

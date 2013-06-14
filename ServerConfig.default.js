@@ -1,5 +1,6 @@
 var config = {
 	include: [
+		{name: 'DbConfig', path: './gameClasses/Utils/DbConfig'},
 		{name: 'ServerNetworkEvents', path: './gameClasses/Network/ServerNetworkEvents'},
 		{name: 'Player', path: './gameClasses/Entities/Player'},
 		{name: 'Plant', path: './gameClasses/Entities/Plant'},

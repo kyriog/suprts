@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Sam 01 Juin 2013 à 19:19
+-- Généré le: Ven 14 Juin 2013 à 12:29
 -- Version du serveur: 5.5.27
 -- Version de PHP: 5.4.7
 
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `chunks` (
 
 CREATE TABLE IF NOT EXISTS `config` (
   `config_name` varchar(30) NOT NULL,
-  `config_value` varchar(255) NOT NULL,
+  `config_value` int(11) NOT NULL,
   PRIMARY KEY (`config_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -51,7 +51,44 @@ CREATE TABLE IF NOT EXISTS `config` (
 --
 
 INSERT INTO `config` (`config_name`, `config_value`) VALUES
-('start_money', '1000');
+('baseHp', 10),
+('baseRegen', 1),
+('cornDecay', 10),
+('cornFertility', 10),
+('cornHumidity', 10),
+('cornMaturation', 10),
+('cornPrice', 10),
+('cornProductivity', 10),
+('cornStorability', 10),
+('fertilizerAddFertility', 10),
+('fertilizerCost', 10),
+('gracetimeBase', 3600),
+('gracetimeReductionPerLevel', 60),
+('hardLevelMoneyDivider', 10),
+('hitDamage', 5),
+('hitEachXSeconds', 2000),
+('hitRatio', 1),
+('hpPerLevel', 10),
+('normalLevelMoneyDivider', 2),
+('plantBestSell', 200),
+('plantCorrectSell', 100),
+('regenPerLevel', 1),
+('startMoney', 1000),
+('tomatoDecay', 10),
+('tomatoFertility', 10),
+('tomatoHumidity', 10),
+('tomatoMaturation', 10),
+('tomatoPrice', 10),
+('tomatoProductivity', 10),
+('tomatoStorability', 10),
+('wateringAddHumidity', 10),
+('wheatDecay', 10),
+('wheatFertility', 10),
+('wheatHumidity', 10),
+('wheatMaturation', 10),
+('wheatPrice', 10),
+('wheatProductivity', 10),
+('wheatStorability', 10);
 
 -- --------------------------------------------------------
 

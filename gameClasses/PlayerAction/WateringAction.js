@@ -50,13 +50,10 @@ var WateringAction =
 				
 			if(ige.server.clients[clientId] == tile.owner) // On verifie qu'on est bien sur une de nos tiles;
 			{
-			
+				var dbconfig = ige.server.dbconfig;
 				
-				if(tile.Humidity < 91)
-				{
-					tile.Humidity = tile.Humidity + 10;
-				}
-				else
+				tile.Humidity += dbconfig.wateringAddHumidity;
+				if(tile.Humidity > 100)
 				{
 					tile.Humidity = 100;
 				}
