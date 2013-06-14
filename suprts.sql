@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Ven 14 Juin 2013 à 15:22
+-- Généré le: Ven 14 Juin 2013 à 15:28
 -- Version du serveur: 5.5.27
 -- Version de PHP: 5.4.7
 
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `chunks` (
 
 CREATE TABLE IF NOT EXISTS `config` (
   `config_name` varchar(30) NOT NULL,
-  `config_value` int(11) NOT NULL,
+  `config_value` float NOT NULL,
   PRIMARY KEY (`config_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
