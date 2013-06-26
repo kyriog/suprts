@@ -1,6 +1,6 @@
 var DbConfig = 
 {
-	loadConfig: function()
+	loadConfig: function(callback)
 	{
 		var query = "SELECT config_name, config_value FROM config";
 		ige.mysql.query(query, function(err, rows) {
@@ -13,6 +13,7 @@ var DbConfig =
 
 					ige.server.dbconfig[name] = value;
 				}
+				callback();
 			}
 			else
 			{
