@@ -93,8 +93,8 @@ var DefendAction =
 					for(id in conquest.tiles) {
 						var tile = conquest.tiles[id];
 						
-						PlayerStats.subLevel(tile.owner);
-						PlayerStats.addLevel(tile.attackedBy);
+						PlayerStats.subLevel(tile.tile.owner);
+						PlayerStats.addLevel(tile.tile.attackedBy);
 						
 						tile.tile.owner = tile.tile.attackedBy;
 						tile.tile.attackedBy = 0;
